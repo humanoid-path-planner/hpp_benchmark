@@ -41,6 +41,7 @@
 #include "benchmark.hh"
 
 using namespace hpp::manipulation;
+using hpp::constraints::EqualToZero;
 
 
 std::map<std::string, double>
@@ -144,21 +145,21 @@ std::vector<std::string> createConstraints (ProblemSolverPtr_t ps, Configuration
   ps->addNumericalConstraint(name, constraints::Implicit::create (
         constraints::RelativeCom::create (name, robot, com, la,
           oMl.actInv(com->com())
-          )));
+          ), 3 * EqualToZero));
 
   // Relative pose of the feet
   name = "pose-right-foot";
   names.push_back(name);
   ps->addNumericalConstraint(name, constraints::Implicit::create (
         constraints::Transformation::create (name, robot, ra,
-          Transform3f::Identity(), oMr)));
+          Transform3f::Identity(), oMr), 6 * EqualToZero));
   
   // Pose of the left foot
   name = "pose-left-foot";
   names.push_back(name);
   ps->addNumericalConstraint(name, constraints::Implicit::create (
         constraints::Transformation::create (name, robot, la,
-          Transform3f::Identity(), oMl)));
+          Transform3f::Identity(), oMl), 6 * EqualToZero));
 
   return names;
 }
@@ -270,7 +271,8 @@ class implicit_versus_explicit : public BenchmarkNCase {
           ps->addNumericalConstraint(name, constraints::Implicit::create (
                 constraints::RelativeTransformation::create (name, device,
                   _gripper->joint(), _handle->joint(),
-                  _gripper->objectPositionInJoint(), _handle->localPosition())));
+                  _gripper->objectPositionInJoint(), _handle->localPosition()),
+                6 * EqualToZero));
           implicitGraspConstraints[std::make_pair(ig,ih)] = name;
           ++ih;
         }

@@ -26,6 +26,7 @@
 
 #include <hpp/constraints/generic-transformation.hh>
 #include <hpp/constraints/implicit.hh>
+#include <hpp/constraints/comparison-types.hh>
 #include <hpp/constraints/locked-joint.hh>
 #include <hpp/constraints/relative-com.hh>
 
@@ -38,6 +39,7 @@
 
 using namespace hpp::pinocchio;
 using namespace hpp::core;
+using hpp::constraints::EqualToZero;
 
 namespace hpp {
 namespace benchmark {
@@ -73,14 +75,14 @@ void createConstraints (ProblemSolverPtr_t ps, Configuration_t q0,
   ps->addNumericalConstraint(name, constraints::Implicit::create (
         constraints::RelativeCom::create (name, robot, com, la,
           oMl.actInv(com->com())
-          )));
+          ), 3 * EqualToZero));
 
   // Relative pose of the feet
   name = "relative-pose";
   ps->addNumericalConstraint(name, constraints::Implicit::create (
         constraints::RelativeTransformation::create (name, robot, la, ra, 
           Transform3f::Identity(), oMr.actInv(oMl)
-          )));
+          ), 6 * EqualToZero));
   
   // Pose of the left foot
   name = "pose-left-foot";
@@ -88,7 +90,7 @@ void createConstraints (ProblemSolverPtr_t ps, Configuration_t q0,
         constraints::Transformation::create (name, robot, la,
           Transform3f::Identity(), oMl,
           std::vector<bool>{false,false,true,true,true,false}
-          )));
+          ), 3 * EqualToZero));
 
   // Complement left foot
   // unused at the moment.
