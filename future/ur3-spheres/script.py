@@ -15,6 +15,7 @@ from hpp.corbaserver.manipulation import Client, ConstraintGraph, Rule, \
 from hpp.corbaserver.manipulation.ur5 import Robot
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.corbaserver import loadServerPlugin
+from hpp_idl.hpp import Equality, EqualToZero
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
@@ -88,22 +89,42 @@ for i in range (nSphere):
   h = r.getHandle(o + '/handle')
   h.setMask([True,True,True,False,True,True])
 
+  # placement constraint
   placementName = "place_sphere{0}".format (i)
   ps.createTransformationConstraint (placementName, "",
                                      "sphere{0}/root_joint".format (i),
                                      [0, 0, 0.02, 0, 0, 0, 1],
                                      [False, False, True, True, True, False])
+  ps.setConstantRightHandSide(placementName, True)
+  # placement complement constraint
   ps.createTransformationConstraint (placementName + '/complement', "",
                                      "sphere{0}/root_joint".format (i),
                                      [0, 0, 0.02, 0, 0, 0, 1],
                                      [True, True, False, False, False, True])
   ps.setConstantRightHandSide(placementName + '/complement', False)
+  # combination of placement and complement
+  ps.createLockedJoint (placementName + '/hold',
+                        "sphere{0}/root_joint".format (i),
+                        [0, 0, 0.02, 0, 0, 0, 1],
+                        [Equality, Equality, EqualToZero,
+                         EqualToZero, EqualToZero, Equality])
+  ps.registerConstraints(placementName, placementName + '/complement',
+                         placementName + '/hold')
 
   preplacementName = "preplace_sphere{0}".format (i)
   ps.createTransformationConstraint (preplacementName, "",
                                      "sphere{0}/root_joint".format (i),
                                      [0, 0, 0.1, 0, 0, 0, 1],
                                      [False, False, True, True, True, False])
+  ps.setConstantRightHandSide(preplacementName, True)
+  # combination of pre-placement and complement
+  ps.createLockedJoint (preplacementName + '/hold',
+                        "sphere{0}/root_joint".format (i),
+                        [0, 0, 0.1, 0, 0, 0, 1],
+                        [Equality, Equality, EqualToZero,
+                         EqualToZero, EqualToZero, Equality])
+  ps.registerConstraints(preplacementName, placementName + '/complement',
+                         preplacementName + '/hold')
 
 q_init = [pi/6, -pi/2, pi/2, 0, 0, 0,
           0.2, 0, 0.02, 0, 0, 0, 1,
