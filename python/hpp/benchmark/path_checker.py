@@ -44,7 +44,7 @@ class PathChecker(object):
             if self.testCollision:
                 if res == False:
                     self.error_message = error_message
-                    print ("There is a collision: ")
+                    print ("There is a collision:")
                     print(error_message)
                     print("At t = {}".format(t))
                     return (t, pathNumber)
