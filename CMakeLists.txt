@@ -133,3 +133,4 @@ add_custom_command(OUTPUT ${ALL_GENERATED_IMAGES}
 add_custom_target(images DEPENDS ${ALL_GENERATED_IMAGES})
 add_dependencies(doc images)
 endif()
+ADD_SUBDIRECTORY(python)
