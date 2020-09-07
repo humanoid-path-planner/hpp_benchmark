@@ -1,0 +1,107 @@
+0:00:11.799143
+Number nodes: 83
+0:00:04.710563
+Number nodes: 47
+0:00:02.255918
+Number nodes: 24
+0:00:13.243181
+Number nodes: 168
+0:00:01.057616
+Number nodes: 9
+0:00:03.384261
+Number nodes: 38
+0:00:03.154837
+Number nodes: 21
+0:00:03.208426
+Number nodes: 26
+0:00:13.004233
+Number nodes: 158
+0:00:02.341377
+Number nodes: 21
+0:00:02.588622
+Number nodes: 23
+0:00:03.157986
+Number nodes: 18
+0:00:05.546270
+Number nodes: 45
+0:00:02.751066
+Number nodes: 19
+0:00:02.395308
+Number nodes: 24
+0:00:02.339389
+Number nodes: 19
+0:00:01.727965
+Number nodes: 11
+0:00:03.882131
+Number nodes: 32
+0:00:03.293494
+Number nodes: 25
+0:00:07.727070
+Number nodes: 83
+Average time: 4.6784428
+Average number nodes: 44.7
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+There is a collision: 
+Collision between object pr2/r_gripper_l_finger_tip_link_0 and box/base_link_0
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+No collision or discontinuity in this path
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+No collision or discontinuity in this path
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+There is a collision: 
+Collision between object pr2/r_gripper_r_finger_tip_link_0 and box/base_link_0
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+No collision or discontinuity in this path
+
+---Path 13---
+No collision or discontinuity in this path
+
+---Path 14---
+There is a collision: 
+Collision between object pr2/l_gripper_l_finger_tip_link_0 and pr2/r_gripper_r_finger_tip_link_0
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+There is a collision: 
+Collision between object pr2/r_gripper_l_finger_tip_link_0 and box/base_link_0
+
+---Path 17---
+No collision or discontinuity in this path
+
+---Path 18---
+No collision or discontinuity in this path
+
+---Path 19---
+There is a collision: 
+Collision between object pr2/l_gripper_palm_link_0 and box/base_link_0

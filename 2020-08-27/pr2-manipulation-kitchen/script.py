@@ -22,9 +22,6 @@ with open('pr2-manipulation-kitchen/benchmark', 'w') as f:
   Client ().problem.resetProblem ()
   # 2}}}
 
-  # Remove joint bound validation
-  ps.hppcorba.problem.clearConfigValidations()
-  ps.addConfigValidation("CollisionValidation")
   # parse arguments {{{2
   parser = ArgumentParser()
   parser.add_argument('-N', default=20, type=int)
@@ -193,6 +190,8 @@ with open('pr2-manipulation-kitchen/benchmark', 'w') as f:
   for i in range (ps.numberPaths()):
     print("\n---Path {}---".format(i))
     p.check_path(i, dtime)
+
+
 
   # 1}}}
 

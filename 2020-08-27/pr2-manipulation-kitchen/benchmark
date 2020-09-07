@@ -1,0 +1,110 @@
+0:00:15.398784
+Number nodes: 132
+0:00:19.229902
+Number nodes: 121
+0:00:14.211773
+Number nodes: 104
+0:00:06.396597
+Number nodes: 54
+0:00:03.545874
+Number nodes: 30
+0:00:07.388798
+Number nodes: 51
+0:00:19.372911
+Number nodes: 126
+0:00:13.698002
+Number nodes: 80
+0:00:19.023646
+Number nodes: 101
+0:00:05.901134
+Number nodes: 24
+0:00:18.562370
+Number nodes: 83
+0:00:10.433461
+Number nodes: 93
+0:00:14.519569
+Number nodes: 83
+0:00:20.075412
+Number nodes: 159
+0:00:05.780225
+Number nodes: 28
+0:00:16.438838
+Number nodes: 127
+0:00:08.873993
+Number nodes: 65
+0:00:34.541607
+Number nodes: 284
+0:00:27.347766
+Number nodes: 158
+0:00:04.803683
+Number nodes: 49
+Number of successes: 20
+Average time: 14.27721725
+Average number nodes: 97.6
+
+---Path 0---
+There is a collision: 
+Collision between object pr2/r_gripper_r_finger_link_0 and kitchen_area/white_counter_top_island_link_0
+
+---Path 1---
+There is a collision: 
+Collision between object pr2/l_upper_arm_link_0 and kitchen_area/pancake_table_table_top_link_0
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+There is a collision: 
+Joint box/root_joint, rank: 1, value out of range: -2.69985 not in [-5.2, -2.7]
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+No collision or discontinuity in this path
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+There is a collision: 
+Collision between object box/base_link_0 and kitchen_area/white_counter_top_sink_link_0
+
+---Path 8---
+There is a collision: 
+Collision between object pr2/l_upper_arm_link_0 and kitchen_area/pancake_table_table_top_link_0
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+There is a collision: 
+Collision between object box/base_link_0 and kitchen_area/counter_top_sink_link_0
+
+---Path 12---
+No collision or discontinuity in this path
+
+---Path 13---
+There is a collision: 
+Joint box/root_joint, rank: 1, value out of range: -5.20017 not in [-5.2, -2.7]
+
+---Path 14---
+No collision or discontinuity in this path
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+No collision or discontinuity in this path
+
+---Path 18---
+No collision or discontinuity in this path
+
+---Path 19---
+No collision or discontinuity in this path

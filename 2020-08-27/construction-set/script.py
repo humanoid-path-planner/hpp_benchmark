@@ -26,7 +26,7 @@ with open('construction-set/benchmark', 'w') as f:
   parser.add_argument('--display', action='store_true')
   parser.add_argument('--run', action='store_true')
   args = parser.parse_args()
-
+  
   # Remove joint bound validation
   ps.hppcorba.problem.clearConfigValidations()
   ps.addConfigValidation("CollisionValidation")

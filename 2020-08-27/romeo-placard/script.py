@@ -29,9 +29,6 @@ with open('romeo-placard/benchmark', 'w') as f:
     
     Robot.srdfSuffix = '_moveit'
     robot = Robot ('romeo-placard', 'romeo')
-    # Remove joint bound validation
-    ps.hppcorba.problem.clearConfigValidations()
-    ps.addConfigValidation("CollisionValidation")
     
     # Define classes for the objects {{{4
     class Placard (object):
@@ -188,19 +185,21 @@ with open('romeo-placard/benchmark', 'w') as f:
         n = ps.numberNodes ()
         totalNumberNodes += n
         print ("Number nodes: " + str(n))
+    # Remove joint bound validation
+    ps.hppcorba.problem.clearConfigValidations()
+    ps.addConfigValidation("CollisionValidation")
+    #check if there are collisions, discontinuities or wrong configurations in each path
+    p = PathChecker(ps, q_init, q_goal)
+    dtime = 0.001 
+    p.continuityThreshold = 50
+    for i in range (ps.numberPaths()):
+      print("\n---Path {}---".format(i))
+      p.check_path(i, dtime)
     
     if args.N!=0:
       print ("Average time: " +
              str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
       print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
-    
-    #check if there are collisions, discontinuities or wrong configurations in each path
-    p = PathChecker(ps, q_init, q_goal)
-    dtime = 0.001
-    p.continuityThreshold = 50 
-    for i in range (ps.numberPaths()):
-      print("\n---Path {}---".format(i))
-      p.check_path(i, dtime)
     
     if args.display:
         v = vf.createViewer ()

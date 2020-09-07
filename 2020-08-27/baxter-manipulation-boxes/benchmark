@@ -1,0 +1,106 @@
+0:00:01.939565
+Number nodes: 63
+0:00:03.789432
+Number nodes: 146
+0:00:07.224643
+Number nodes: 251
+0:00:00.811902
+Number nodes: 26
+0:00:02.538829
+Number nodes: 96
+0:00:08.566251
+Number nodes: 316
+0:00:01.330803
+Number nodes: 53
+0:00:02.540363
+Number nodes: 85
+0:00:06.037538
+Number nodes: 212
+0:00:03.964856
+Number nodes: 131
+0:00:00.359669
+Number nodes: 15
+0:00:00.934507
+Number nodes: 33
+0:00:06.876433
+Number nodes: 260
+0:00:01.467781
+Number nodes: 51
+0:00:02.612491
+Number nodes: 83
+0:00:02.633050
+Number nodes: 96
+0:00:01.548204
+Number nodes: 61
+0:00:03.933482
+Number nodes: 134
+0:00:03.105928
+Number nodes: 108
+0:00:05.952110
+Number nodes: 198
+Average time: 3.40839185
+Average number nodes: 120.9
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+No collision or discontinuity in this path
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+No collision or discontinuity in this path
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+There is a collision: 
+Collision between object baxter/l_gripper_r_finger_tip_0 and baxter/right_gripper_base_link_0
+At t = 25.019
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+No collision or discontinuity in this path
+
+---Path 13---
+No collision or discontinuity in this path
+
+---Path 14---
+No collision or discontinuity in this path
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+No collision or discontinuity in this path
+
+---Path 18---
+No collision or discontinuity in this path
+
+---Path 19---
+There is a collision: 
+Collision between object baxter/l_gripper_l_finger_0 and box1/base_link_0
+At t = 40.621

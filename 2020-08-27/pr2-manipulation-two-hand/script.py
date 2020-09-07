@@ -24,10 +24,7 @@ with open('pr2-manipulation-two-hand/benchmark', 'w') as f:
 
   loadServerPlugin ("corbaserver", "manipulation-corba.so")
   Client ().problem.resetProblem ()
-
-  # Remove joint bound validation
-  ps.hppcorba.problem.clearConfigValidations()
-  ps.addConfigValidation("CollisionValidation")
+  
   class Box (object):
     rootJointType = 'freeflyer'
     packageName = 'hpp_tutorial'
@@ -43,6 +40,9 @@ with open('pr2-manipulation-two-hand/benchmark', 'w') as f:
     urdfSuffix = ""
     srdfSuffix = ""
 
+  # Remove joint bound validation
+  ps.hppcorba.problem.clearConfigValidations()
+  ps.addConfigValidation("CollisionValidation")
   # Load robot and object. {{{3
   robot = Robot ('pr2-box', 'pr2') # was anchor joint
   ps = ProblemSolver (robot)
@@ -191,7 +191,6 @@ with open('pr2-manipulation-two-hand/benchmark', 'w') as f:
   print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
   print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
 
-  #check if there are collisions, discontinuities or wrong configurations in each path
   p = PathChecker(ps, q_init, q_goal)
   dtime = 0.001 
   p.continuityThreshold = 10

@@ -27,9 +27,6 @@ with open('hrp2-on-the-ground/benchmark', 'w') as f:
   #Robot.urdfSuffix = ''
   #Robot.srdfSuffix= ''
   
-  # Remove joint bound validation
-  ps.hppcorba.problem.clearConfigValidations()
-  ps.addConfigValidation("CollisionValidation")
   robot = Robot ('hrp2_14')
   robot.setJointBounds ("root_joint", [-3, 3, -3, 3, 0, 1,-1,1,-1,1,-1,1,-1,1])
   cl = robot.client
@@ -78,7 +75,9 @@ with open('hrp2-on-the-ground/benchmark', 'w') as f:
   else:
     raise RuntimeError ("Failed to apply constraint.")
   
-  
+  # Remove joint bound validation
+  ps.hppcorba.problem.clearConfigValidations()
+  ps.addConfigValidation("CollisionValidation")
   ps.selectPathValidation ("Progressive", 0.025)
   
   import datetime as dt
