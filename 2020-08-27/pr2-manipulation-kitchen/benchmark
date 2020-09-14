@@ -43,18 +43,18 @@ Average time: 14.27721725
 Average number nodes: 97.6
 
 ---Path 0---
-There is a collision: 
+There is a collision:
 Collision between object pr2/r_gripper_r_finger_link_0 and kitchen_area/white_counter_top_island_link_0
 
 ---Path 1---
-There is a collision: 
+There is a collision:
 Collision between object pr2/l_upper_arm_link_0 and kitchen_area/pancake_table_table_top_link_0
 
 ---Path 2---
 No collision or discontinuity in this path
 
 ---Path 3---
-There is a collision: 
+There is a collision:
 Joint box/root_joint, rank: 1, value out of range: -2.69985 not in [-5.2, -2.7]
 
 ---Path 4---
@@ -67,11 +67,11 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 7---
-There is a collision: 
+There is a collision:
 Collision between object box/base_link_0 and kitchen_area/white_counter_top_sink_link_0
 
 ---Path 8---
-There is a collision: 
+There is a collision:
 Collision between object pr2/l_upper_arm_link_0 and kitchen_area/pancake_table_table_top_link_0
 
 ---Path 9---
@@ -81,14 +81,14 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 11---
-There is a collision: 
+There is a collision:
 Collision between object box/base_link_0 and kitchen_area/counter_top_sink_link_0
 
 ---Path 12---
 No collision or discontinuity in this path
 
 ---Path 13---
-There is a collision: 
+There is a collision:
 Joint box/root_joint, rank: 1, value out of range: -5.20017 not in [-5.2, -2.7]
 
 ---Path 14---

@@ -63,7 +63,7 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 7---
-There is a collision: 
+There is a collision:
 Collision between object baxter/l_gripper_r_finger_tip_0 and baxter/right_gripper_base_link_0
 At t = 25.019
 
@@ -101,6 +101,6 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 19---
-There is a collision: 
+There is a collision:
 Collision between object baxter/l_gripper_l_finger_0 and box1/base_link_0
 At t = 40.621

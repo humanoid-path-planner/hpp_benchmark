@@ -45,7 +45,7 @@ Average number nodes: 44.7
 No collision or discontinuity in this path
 
 ---Path 1---
-There is a collision: 
+There is a collision:
 Collision between object pr2/r_gripper_l_finger_tip_link_0 and box/base_link_0
 
 ---Path 2---
@@ -70,7 +70,7 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 9---
-There is a collision: 
+There is a collision:
 Collision between object pr2/r_gripper_r_finger_tip_link_0 and box/base_link_0
 
 ---Path 10---
@@ -86,14 +86,14 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 14---
-There is a collision: 
+There is a collision:
 Collision between object pr2/l_gripper_l_finger_tip_link_0 and pr2/r_gripper_r_finger_tip_link_0
 
 ---Path 15---
 No collision or discontinuity in this path
 
 ---Path 16---
-There is a collision: 
+There is a collision:
 Collision between object pr2/r_gripper_l_finger_tip_link_0 and box/base_link_0
 
 ---Path 17---
@@ -103,5 +103,5 @@ No collision or discontinuity in this path
 No collision or discontinuity in this path
 
 ---Path 19---
-There is a collision: 
+There is a collision:
 Collision between object pr2/l_gripper_palm_link_0 and box/base_link_0

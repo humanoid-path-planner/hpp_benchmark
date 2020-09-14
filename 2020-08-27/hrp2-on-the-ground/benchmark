@@ -42,7 +42,7 @@ Average time: 1.4768076
 Average number nodes: 32.4
 
 ---Path 0---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 4.849
 
@@ -50,12 +50,12 @@ At t = 4.849
 No collision or discontinuity in this path
 
 ---Path 2---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 0.047
 
 ---Path 3---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 10.401
 
@@ -63,7 +63,7 @@ At t = 10.401
 No collision or discontinuity in this path
 
 ---Path 5---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 0.582
 
@@ -71,12 +71,12 @@ At t = 0.582
 No collision or discontinuity in this path
 
 ---Path 7---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 4.293
 
 ---Path 8---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 5.791
 
@@ -84,7 +84,7 @@ At t = 5.791
 No collision or discontinuity in this path
 
 ---Path 10---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 9.549
 
@@ -92,27 +92,27 @@ At t = 9.549
 No collision or discontinuity in this path
 
 ---Path 12---
-There is a collision: 
+There is a collision:
 Collision between object BODY_0 and LHAND_LINK3_0
 At t = 14.104
 
 ---Path 13---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 24.2
 
 ---Path 14---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 5.942
 
 ---Path 15---
-There is a collision: 
+There is a collision:
 Collision between object LHAND_LINK0_0 and LLEG_LINK0_0
 At t = 7.222
 
 ---Path 16---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 28.52
 
@@ -120,7 +120,7 @@ At t = 28.52
 No collision or discontinuity in this path
 
 ---Path 18---
-There is a collision: 
+There is a collision:
 Collision between object RLEG_LINK0_0 and RLEG_LINK2_0
 At t = 1.301
 

@@ -23,8 +23,8 @@ To save the benchmarks, commit the output directory.
 The format of the argument `new_directory_name` is: `year-month-day`
 This program creates a copy of the directory `future` into a new directory which contains the benchmarks.
 
-In each sub-directories of this copy of future, it will run one after another the python scripts (script.py). For each script 2 windows will be opened: a window with `hppcorbaserver` and another window where the `script.py` is running. So a script is running only if these two windows are opended.
+In each sub-directories of this copy of future, it will run one after another the python scripts (script.py). 2 windows will be opened: a window with `hppcorbaserver` and another window where the `script.py` is running.
 
-When the execution of a script is done, the python's window is closed and the output will be written in a file named `benchmark` in the directory corresponding to the robot's name, next to the script. The `hppcorbaserver` window still open.
+When the execution of a script is done, the python's window is closed and the output will be written in a file named `benchmark` in the directory corresponding to the robot's name, next to the script.
 
-To execute the next script you have to close this window. Two new windows automatically appear (`hppcorbaserver`and `python`) which means that a new script is running.
+The `hppcorbaserver` window still open and the next script is automatically executed when the previous is done. The name of script which is running is written in the terminal.

@@ -11,9 +11,7 @@ from hpp.corbaserver import ProblemSolver
 from hpp.gepetto import ViewerFactory
 from math import pi
 from hpp.benchmark import PathChecker
-from hpp.corbaserver.manipulation import Client
 import sys
-Client ().problem.resetProblem ()
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)

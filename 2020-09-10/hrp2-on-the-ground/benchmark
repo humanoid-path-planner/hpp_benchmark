@@ -1,0 +1,236 @@
+0:00:00.276123
+Number nodes: 28
+0:00:00.076061
+Number nodes: 8
+0:00:00.065109
+Number nodes: 8
+0:00:00.789047
+Number nodes: 79
+0:00:00.063002
+Number nodes: 6
+0:00:00.338073
+Number nodes: 32
+0:00:00.029118
+Number nodes: 4
+0:00:00.031020
+Number nodes: 4
+0:00:00.733839
+Number nodes: 72
+0:00:00.535174
+Number nodes: 53
+0:00:00.028865
+Number nodes: 4
+0:00:00.128883
+Number nodes: 14
+0:00:00.101813
+Number nodes: 10
+0:00:00.052801
+Number nodes: 6
+0:00:00.222462
+Number nodes: 23
+0:00:00.188444
+Number nodes: 21
+0:00:00.189355
+Number nodes: 18
+0:00:00.225021
+Number nodes: 23
+0:00:00.073120
+Number nodes: 10
+0:00:00.054985
+Number nodes: 6
+Average time: 0.21011575
+Average number nodes: 21.45
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+PathId: 1
+ Time: 10.91499999999939
+ Index: 5
+There is a discontinuity:
+Vmax = [  0.6307175    0.7736426    0.14551795   2.18757129   2.45461567
+  11.97478465   0.3428012    0.42149139   0.34152513   0.14751431
+   0.700912     0.56968993   0.77910932   0.46031154   0.71895419
+   0.59283317   0.           0.           0.           0.           0.           0.
+   0.67291483   0.37309795   0.37405841   0.41996302   0.46511265
+   0.67691354   0.           0.           0.           0.           0.           0.
+   5.27294882   1.59216031   0.51790108   0.30544236   0.53897549
+   0.47003923   5.29699337   1.47816567   0.90711537   0.37793031
+   0.56680187   0.35358654   0.        ]
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+No collision or discontinuity in this path
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+No collision or discontinuity in this path
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+There is a collision:
+Collision between object BODY_0 and LARM_LINK4_0
+At t = 8.150000000000922
+
+---Path 13---
+No collision or discontinuity in this path
+
+---Path 14---
+No collision or discontinuity in this path
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+No collision or discontinuity in this path
+
+---Path 18---
+No collision or discontinuity in this path
+
+---Path 19---
+No collision or discontinuity in this path
+
+---Path 20---
+No collision or discontinuity in this path
+
+---Path 21---
+No collision or discontinuity in this path
+
+---Path 22---
+No collision or discontinuity in this path
+
+---Path 23---
+No collision or discontinuity in this path
+
+---Path 24---
+No collision or discontinuity in this path
+
+---Path 25---
+No collision or discontinuity in this path
+
+---Path 26---
+No collision or discontinuity in this path
+
+---Path 27---
+No collision or discontinuity in this path
+
+---Path 28---
+No collision or discontinuity in this path
+
+---Path 29---
+No collision or discontinuity in this path
+
+---Path 30---
+No collision or discontinuity in this path
+
+---Path 31---
+No collision or discontinuity in this path
+
+---Path 32---
+No collision or discontinuity in this path
+
+---Path 33---
+No collision or discontinuity in this path
+
+---Path 34---
+No collision or discontinuity in this path
+
+---Path 35---
+No collision or discontinuity in this path
+
+---Path 36---
+No collision or discontinuity in this path
+
+---Path 37---
+No collision or discontinuity in this path
+
+---Path 38---
+No collision or discontinuity in this path
+
+---Path 39---
+No collision or discontinuity in this path
+
+---Path 40---
+No collision or discontinuity in this path
+
+---Path 41---
+No collision or discontinuity in this path
+
+---Path 42---
+No collision or discontinuity in this path
+
+---Path 43---
+No collision or discontinuity in this path
+
+---Path 44---
+No collision or discontinuity in this path
+
+---Path 45---
+No collision or discontinuity in this path
+
+---Path 46---
+No collision or discontinuity in this path
+
+---Path 47---
+No collision or discontinuity in this path
+
+---Path 48---
+No collision or discontinuity in this path
+
+---Path 49---
+No collision or discontinuity in this path
+
+---Path 50---
+No collision or discontinuity in this path
+
+---Path 51---
+No collision or discontinuity in this path
+
+---Path 52---
+No collision or discontinuity in this path
+
+---Path 53---
+No collision or discontinuity in this path
+
+---Path 54---
+No collision or discontinuity in this path
+
+---Path 55---
+No collision or discontinuity in this path
+
+---Path 56---
+No collision or discontinuity in this path
+
+---Path 57---
+No collision or discontinuity in this path
+
+---Path 58---
+No collision or discontinuity in this path
+
+---Path 59---
+No collision or discontinuity in this path

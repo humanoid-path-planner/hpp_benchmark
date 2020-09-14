@@ -117,12 +117,12 @@ Vmax = [  2.38202483e-01   1.23874821e+00   1.28565939e-03   8.04672165e-02
    0.00000000e+00]
 
 ---Path 4---
-There is a collision: 
+There is a collision:
 Collision between object romeo/LThumb2Link_0 and romeo/RFinger23Link_0
 At t = 2.78
 
 ---Path 5---
-There is a collision: 
+There is a collision:
 Collision between object romeo/LFinger32Link_0 and placard/placard_0
 At t = 1.368
 
@@ -199,7 +199,7 @@ Vmax = [  2.34797554e-01   1.42171549e+00   7.24596296e-03   4.51757961e-01
    0.00000000e+00]
 
 ---Path 9---
-There is a collision: 
+There is a collision:
 Collision between object romeo/LFinger32Link_0 and romeo/RFinger23Link_0
 At t = 1.226
 
@@ -276,12 +276,12 @@ Vmax = [  2.03862953e-01   1.83809200e+00   1.68704653e-03   1.49446399e-01
    0.00000000e+00]
 
 ---Path 13---
-There is a collision: 
+There is a collision:
 Collision between object romeo/r_wrist_0 and placard/placard_0
 At t = 0.862
 
 ---Path 14---
-There is a collision: 
+There is a collision:
 Joint placard/root_joint, rank: 2, value out of range: -1.12246e-06 not in [0, 1.5]
 At t = 2.678
 
