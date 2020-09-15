@@ -18,6 +18,7 @@ from hpp.gepetto import PathPlayer
 from state_name import StateName
 from visibility_prm import VisibilityPRM
 import time, sys
+from hpp.benchmark import PathChecker
 
 
 parser = ArgumentParser()
@@ -309,5 +310,11 @@ if args.N != 0:
   print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
   print ("Average number nodes: " + str (totalNumberNodes/float(args.N)))
   cleanPaths (ps, solutions)
+#check if there are collisions in each path
+p = PathChecker(ps, q0, q_goal)
+dtime = 0.001
+for i in range (ps.numberPaths()):
+  print("\n---Path {}---".format(i))
+  p.check_path(i, dtime)
 if args.run:
   pp(0)

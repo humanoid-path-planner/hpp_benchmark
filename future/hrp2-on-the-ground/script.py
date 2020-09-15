@@ -11,7 +11,7 @@ from hpp.corbaserver import ProblemSolver
 from hpp.gepetto import ViewerFactory
 from math import pi
 from hpp.benchmark import PathChecker
-from hpp.corbaserver.manipulation import Client
+from hpp.corbaserver import Client
 import sys
 Client ().problem.resetProblem ()
 
