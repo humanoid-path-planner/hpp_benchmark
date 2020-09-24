@@ -1,0 +1,113 @@
+0:00:16.243010
+Number nodes: 107
+0:00:10.240534
+Number nodes: 77
+0:00:15.547529
+Number nodes: 87
+0:00:27.943080
+Number nodes: 152
+0:00:05.668638
+Number nodes: 35
+0:00:15.904712
+Number nodes: 113
+0:00:30.160506
+Number nodes: 218
+0:00:21.641231
+Number nodes: 161
+0:00:06.268512
+Number nodes: 42
+0:00:15.594265
+Number nodes: 99
+0:00:10.796461
+Number nodes: 85
+0:00:12.125050
+Number nodes: 109
+0:00:35.493793
+Number nodes: 216
+0:00:28.078953
+Number nodes: 231
+0:00:23.695657
+Number nodes: 184
+0:00:19.489259
+Number nodes: 115
+0:00:11.952997
+Number nodes: 97
+0:00:22.832969
+Number nodes: 169
+0:00:08.515505
+Number nodes: 50
+0:00:10.003793
+Number nodes: 88
+Number of successes: 20
+Average time: 17.4098227
+Average number nodes: 121.75
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+No collision or discontinuity in this path
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+There is a collision:
+Collision between object pr2/l_gripper_r_finger_tip_link_0 and kitchen_area/white_counter_top_sink_link_0
+At t = 22.615000000004656
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+No collision or discontinuity in this path
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+There is a collision:
+Collision between object box/base_link_0 and kitchen_area/counter_top_sink_link_0
+At t = 24.77000000000729
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+No collision or discontinuity in this path
+
+---Path 13---
+There is a collision:
+Collision between object box/base_link_0 and kitchen_area/counter_side_fridge_left_link_0
+At t = 11.116999999999278
+
+---Path 14---
+No collision or discontinuity in this path
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+There is a collision:
+Collision between object pr2/l_upper_arm_link_0 and kitchen_area/pancake_table_table_top_link_0
+At t = 11.928999999998828
+
+---Path 18---
+There is a collision:
+Collision between object pr2/r_forearm_link_0 and kitchen_area/handle_drawer_sink_col3_top_link_0
+At t = 8.525000000000714
+
+---Path 19---
+No collision or discontinuity in this path

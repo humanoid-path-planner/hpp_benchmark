@@ -1,0 +1,122 @@
+0:00:17.722732
+Number nodes: 360
+0:00:07.203435
+Number nodes: 128
+0:00:13.919039
+Number nodes: 307
+0:00:09.632711
+Number nodes: 184
+0:00:03.687890
+Number nodes: 85
+0:00:12.313274
+Number nodes: 246
+0:00:15.403915
+Number nodes: 339
+0:00:07.284739
+Number nodes: 145
+0:00:18.353214
+Number nodes: 391
+0:00:09.034499
+Number nodes: 221
+0:00:25.887890
+Number nodes: 583
+0:00:15.983974
+Number nodes: 304
+0:00:24.959581
+Number nodes: 488
+0:00:02.869390
+Number nodes: 65
+0:00:07.868209
+Number nodes: 170
+0:00:32.755400
+Number nodes: 722
+0:00:15.602649
+Number nodes: 349
+0:00:08.861427
+Number nodes: 173
+0:00:11.956562
+Number nodes: 217
+0:00:40.425164
+Number nodes: 920
+Average time: 15.086284699999998
+Average number nodes: 319.85
+
+Testing the collision with the table:
+	Ok. The collision was detected.
+
+Testing the collision between forearms:
+	Ok. The collision was detected.
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+There is a collision:
+Collision between object box0/base_link_0 and box1/base_link_0
+At t = 28.193000000011473
+
+---Path 2---
+No collision or discontinuity in this path
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+There is a collision:
+Collision between object baxter/r_gripper_l_finger_0 and box0/base_link_0
+At t = 39.37299999999894
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+No collision or discontinuity in this path
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+There is a collision:
+Collision between object baxter/collision_head_link_2_0 and baxter/left_upper_elbow_visual_0
+At t = 51.173999999971436
+
+---Path 13---
+No collision or discontinuity in this path
+
+---Path 14---
+There is a collision:
+Collision between object baxter/l_gripper_r_finger_tip_0 and table/pancake_table_table_top_link_0
+At t = 44.711999999986496
+
+---Path 15---
+There is a collision:
+Collision between object baxter/collision_head_link_1_0 and baxter/right_upper_elbow_visual_0
+At t = 17.507999999998415
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+There is a collision:
+Collision between object baxter/r_gripper_r_finger_0 and box1/base_link_0
+At t = 19.334000000000646
+
+---Path 18---
+There is a collision:
+Collision between object baxter/collision_head_link_1_0 and baxter/right_upper_elbow_visual_0
+At t = 30.860000000014733
+
+---Path 19---
+No collision or discontinuity in this path

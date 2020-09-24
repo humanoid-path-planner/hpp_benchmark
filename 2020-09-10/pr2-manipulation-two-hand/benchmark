@@ -1,0 +1,106 @@
+0:00:01.542619
+Number nodes: 8
+0:00:15.522331
+Number nodes: 127
+0:00:08.255589
+Number nodes: 98
+0:00:02.099388
+Number nodes: 19
+0:00:03.427118
+Number nodes: 36
+0:00:03.830205
+Number nodes: 33
+0:00:06.139694
+Number nodes: 50
+0:00:03.048496
+Number nodes: 26
+0:00:04.186197
+Number nodes: 23
+0:00:03.009334
+Number nodes: 23
+0:00:03.084156
+Number nodes: 23
+0:00:02.833777
+Number nodes: 18
+0:00:07.738394
+Number nodes: 75
+0:00:02.456906
+Number nodes: 22
+0:00:03.159655
+Number nodes: 30
+0:00:25.032725
+Number nodes: 216
+0:00:05.030554
+Number nodes: 49
+0:00:04.737947
+Number nodes: 38
+0:00:03.739195
+Number nodes: 28
+0:00:07.779587
+Number nodes: 83
+Average time: 5.83269335
+Average number nodes: 51.25
+
+---Path 0---
+No collision or discontinuity in this path
+
+---Path 1---
+There is a collision:
+Collision between object pr2/l_gripper_l_finger_tip_link_0 and box/base_link_0
+At t = 5.13700000000005
+
+---Path 2---
+There is a collision:
+Collision between object pr2/r_gripper_r_finger_tip_link_0 and kitchen_area/pancake_table_table_top_link_0
+At t = 4.978999999999997
+
+---Path 3---
+No collision or discontinuity in this path
+
+---Path 4---
+No collision or discontinuity in this path
+
+---Path 5---
+No collision or discontinuity in this path
+
+---Path 6---
+No collision or discontinuity in this path
+
+---Path 7---
+No collision or discontinuity in this path
+
+---Path 8---
+No collision or discontinuity in this path
+
+---Path 9---
+No collision or discontinuity in this path
+
+---Path 10---
+No collision or discontinuity in this path
+
+---Path 11---
+No collision or discontinuity in this path
+
+---Path 12---
+No collision or discontinuity in this path
+
+---Path 13---
+No collision or discontinuity in this path
+
+---Path 14---
+No collision or discontinuity in this path
+
+---Path 15---
+No collision or discontinuity in this path
+
+---Path 16---
+No collision or discontinuity in this path
+
+---Path 17---
+No collision or discontinuity in this path
+
+---Path 18---
+No collision or discontinuity in this path
+
+---Path 19---
+No collision or discontinuity in this path
