@@ -207,3 +207,6 @@ if args.display:
     pp = PathPlayer (v)
     if args.run:
         pp(0)
+
+for i in range(K):
+  robot.setJointBounds (boxes[i]+ '/root_joint', [-10,10,-10,10,-10,10,-1,1,-1,1,-1,1,-1,1])

@@ -182,3 +182,5 @@ if args.display:
     pp = PathPlayer (v, robot.client.basic)
     if args.run:
         pp(0)
+
+robot.setJointBounds ("box/root_joint", [-10,10,-10,-10,0,3,-2,2,-2,2,-2,2,-2,2])

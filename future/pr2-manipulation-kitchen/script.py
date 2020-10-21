@@ -190,3 +190,4 @@ if args.display:
         pp(0)
 
 # vim: foldmethod=marker foldlevel=1
+robot.setJointBounds ("box/root_joint", [-10,10,-10,-10,0,3,-2,2,-2,2,-2,2,-2,2])
