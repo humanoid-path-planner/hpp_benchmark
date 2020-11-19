@@ -19,6 +19,7 @@ from hpp.gepetto import PathPlayer
 from state_name import StateName
 from visibility_prm import VisibilityPRM
 import time, sys
+from math import sqrt
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
@@ -317,3 +318,20 @@ if args.N != 0:
   print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
   print ("Average number nodes: " + str (totalNumberNodes/float(args.N)))
   cleanPaths (ps, solutions)
+
+# Create a goal configuration with the construction set assembled.
+
+ps.selectPathPlanner('StatesPathFinder')
+#ps.selectPathValidation('NoValidation', 0)
+ps.clearConfigValidations()
+
+cg.initialize()
+
+c = sqrt(2)/2
+q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
+                           0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
+                           0, -0.15, 0.025, 0, 0, 0, 1,
+                          0.5, -0.08, 0.025, 0, 0, 0, 1]
+ps.setInitialConfig(q0)
+ps.addGoalConfig(q_goal)
+ps.setMaxIterPathPlanning(100)
