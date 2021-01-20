@@ -13,7 +13,6 @@ from hpp.gepetto.manipulation import Viewer, ViewerFactory
 from hpp.gepetto import PathPlayer
 from hpp import Transform
 from hpp.corbaserver import loadServerPlugin
-from hpp.benchmark import PathChecker
 import sys
 
 parser = ArgumentParser()
@@ -192,14 +191,6 @@ if args.N!=0:
          str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
   print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
 
-#check if there are collisions, discontinuities or wrong configurations in each path
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001
-p.continuityThreshold = 50 
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
-
 if args.display:
     v = vf.createViewer ()
     v (q)
@@ -255,6 +246,8 @@ for g in benchGrasps:
 
 name = dict ()
 name [(('romeo/l_hand', 'placard/low'), ('romeo/r_hand', 'placard/high'))] =\
+  "both hands"
+name [(('romeo/r_hand', 'placard/high'), ('romeo/l_hand', 'placard/low'))] =\
   "both hands"
 name [(('romeo/r_hand', 'placard/high'),)] = "right hand"
 name [(('romeo/l_hand', 'placard/low'),)] = "left hand"
