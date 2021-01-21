@@ -13,7 +13,6 @@ from hpp.corbaserver.manipulation import ProblemSolver, ConstraintGraph, \
 from hpp.gepetto.manipulation import ViewerFactory
 from math import pi
 from hpp.corbaserver import loadServerPlugin
-from hpp.benchmark import PathChecker
 import sys
 
 loadServerPlugin ("corbaserver", "manipulation-corba.so")
@@ -165,11 +164,6 @@ print ("Number of successes: " + str (success))
 print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (success)))
 print ("Average number nodes: " + str (totalNumberNodes/float (success)))
 #check if there are collisions, discontinuities or wrong configurations in each path
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 # 1}}}
 if args.display:
     from hpp.gepetto import PathPlayer

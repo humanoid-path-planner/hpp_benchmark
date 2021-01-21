@@ -10,7 +10,6 @@ from hpp.corbaserver.hrp2 import Robot
 from hpp.corbaserver import ProblemSolver
 from hpp.gepetto import ViewerFactory
 from math import pi
-from hpp.benchmark import PathChecker
 from hpp.corbaserver import Client
 import sys
 Client ().problem.resetProblem ()
@@ -100,10 +99,5 @@ print(("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/f
 print(("Average number nodes: " + str (totalNumberNodes/float (args.N))))
 
 #check if there are collisions, discontinuities or wrong configurations in each path
-p = PathChecker(ps, q1proj, q2proj)
-dtime = 0.001
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 
 vf = ViewerFactory (ps)

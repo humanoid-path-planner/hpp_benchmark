@@ -7,7 +7,6 @@ from argparse import ArgumentParser
 from hpp.corbaserver.pr2 import Robot
 from hpp.gepetto import PathPlayer
 from math import pi
-from hpp.benchmark import PathChecker
 import sys
 
 parser = ArgumentParser()
@@ -55,11 +54,6 @@ for i in range (args.N):
     print ("Number nodes: " + str(n))
 print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
 print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 if args.display:
     v = vf.createViewer(); v (q_init)
     pp = PathPlayer (v, robot.client)

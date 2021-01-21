@@ -11,7 +11,6 @@ from hpp.gepetto.manipulation import Viewer, ViewerFactory
 from hpp.gepetto import PathPlayer
 from math import sqrt
 from hpp.corbaserver import loadServerPlugin
-from hpp.benchmark import PathChecker
 import sys
 
 
@@ -62,11 +61,6 @@ rank = robot.rankInConfiguration ['pr2/torso_lift_joint']
 q_init [rank] = 0.2
 q_goal = q_init [::]
 #check if there are collisions in each path
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001 
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 rank = robot.rankInConfiguration ['box/root_joint']
 c = sqrt (2) / 2
 #q_init [rank:rank+4] = [c, 0, c, 0]
@@ -160,13 +154,6 @@ for i in range (args.N):
 print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
 print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
 #check if there are collisions, discontinuities or wrong configurations in each path
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001
-p.continuityThreshold = 10
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
-
 if args.display:
     v = vf.createViewer ()
     pp = PathPlayer (v, robot.client.basic)

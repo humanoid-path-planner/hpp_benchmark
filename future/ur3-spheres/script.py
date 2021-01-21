@@ -16,7 +16,6 @@ from hpp.corbaserver.manipulation.ur5 import Robot
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.corbaserver import loadServerPlugin
 from hpp_idl.hpp import Equality, EqualToZero
-from hpp.benchmark import PathChecker
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
@@ -161,11 +160,6 @@ for i in range (args.N):
     totalNumberNodes += n
     print ("Number nodes: " + str(n))
 #check if there are collisions in each path
-p = PathChecker(ps, q_init, q_goal)
-dtime = 0.001
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 if args.N!=0:
   print ("Average time: " +
          str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))

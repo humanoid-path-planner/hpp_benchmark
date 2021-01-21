@@ -16,8 +16,6 @@ from hpp.corbaserver import loadServerPlugin
 loadServerPlugin ("corbaserver", "manipulation-corba.so")
 Client ().problem.resetProblem ()
 
-from hpp.benchmark import PathChecker
-
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
 parser.add_argument('--display', action='store_true')
@@ -179,30 +177,6 @@ for i in range (args.N):
 if args.N != 0:
   print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
   print ("Average number nodes: " + str (totalNumberNodes/float(args.N)))
-#Testing the collision with the table
-print("\nTesting the collision with the table:")
-collision_with_table = [0.0, 2.610308057898798e-17, 0.887300044298172, 3.454677392176343e-21, 3.454677392176343e-21, 0.0, 0.0, 0.0, 0.02, -0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.02, -0.02, -0.3002186310599345, 0.7004149846796748, 0.7460031767201116, -0.34488563060157046, -0.6172228282391982, -0.34497904354078657, 0.6173162411784143, -0.40021863105993455, 0.7004149846796748, 0.7460031767201116, -0.34488563060157046, -0.6172228282391982, -0.34497904354078657, 0.6173162411784143]
-bo, msg = robot.isConfigValid(collision_with_table)
-if bo == True:
-  print("\tFail. The collision between baxter/left_upper_forearm_visual and table/pancake_table_table_top_link_0 is not detected.")
-else:
-  print("\tOk. The collision was detected.")
-
-#Testing the collision between forearms
-print("\nTesting the collision between forearms:")
-q_collision_forearms = [0.0, -1.089075164794922, 2.610308057898798e-17, 3.454677392176343e-21, 3.454677392176343e-21, 0.0, 0.0, 0.0, 0.02, -0.02, 1.29327675819397, 0.0, 0.0, 0.0,0.0,0.0, 0.0, 0.02, -0.02, -0.3002186310599345, 0.7004149846796748, 0.7460031767201116, -0.34488563060157046, -0.6172228282391982, -0.34497904354078657, 0.6173162411784143, -0.40021863105993455, 0.7004149846796748, 0.7460031767201116,-0.34488563060157046,-0.6172228282391982, -0.34497904354078657, 0.6173162411784143]
-bo, msg = robot.isConfigValid(q_collision_forearms)
-if bo == True:
-  print("\tFail. The collision between baxter/left_upper_forearm_0 and baxter/right_upper_forearm_visual_0 is not detected.")
-else:
-  print("\tOk. The collision was detected.")
-
-#check if there are collisions, discontinuities or wrong configurations in each path
-p = PathChecker(ps, q_init_proj, q_goal_proj)
-dtime = 0.001
-for i in range (ps.numberPaths()):
-  print("\n---Path {}---".format(i))
-  p.check_path(i, dtime)
 
 if args.display:
     v = vf.createViewer ()
