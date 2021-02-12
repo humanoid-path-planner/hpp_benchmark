@@ -206,7 +206,7 @@ void BenchmarkCase::run (int N, const std::string& name)
     timer.start();
     solveProblem();
     timer.stop();
-    results["Time (s)"].push_back(time_scale * 1e-6 * static_cast<value_type>(timer.duration().total_microseconds()));
+    results["Time (s)"].push_back(time_scale * static_cast<value_type>(timer.duration()));
     saveResolutionResult(results);
     if (validateSolution()) output.pb_ok();
     else                    output.pb_bad();
@@ -248,7 +248,7 @@ void BenchmarkNCase::run (int N, const std::string& name)
       timer.start();
       solveProblem();
       timer.stop();
-      results["Time (s)"].push_back(time_scale * 1e-3 * static_cast<value_type>(timer.duration().total_milliseconds()));
+      results["Time (s)"].push_back(time_scale * static_cast<value_type>(timer.duration()));
       saveResolutionResult(results);
       if (validateSolution()) output.pb_ok();
       else                    output.pb_bad();
