@@ -26,7 +26,7 @@ csv_files.sort()
 
 benchmarks = dict()
 for csv in csv_files:
-    year, month, day, bench = csv.split(sep=os.path.sep, maxsplit=3)
+    year, month, day, bench = csv.split(os.path.sep, 3)
     if bench not in benchmarks:
         benchmarks[bench] = list()
     benchmarks[bench].append(csv)

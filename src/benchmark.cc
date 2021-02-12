@@ -304,6 +304,7 @@ int main(int argc, char**argv)
 
   int N = 20;
   int iarg = 0;
+  bool run_all = true;
   // Parse arguments
   while (++iarg < argc) {
     if (strcmp(argv[iarg], "--help") == 0) {
@@ -322,7 +323,7 @@ int main(int argc, char**argv)
         return 1;
       }
       BenchmarkRunner::run(N, name, problems[name]);
-      return 0;
+      run_all = false;
     } else if (strcmp(argv[iarg], "--output") == 0) {
       CHECK_REMAINING_ARGC(iarg, 1, "--output");
       output.setOutputDir(argv[++iarg]);
@@ -336,7 +337,8 @@ int main(int argc, char**argv)
   }
 
   // Run the benchmarks
-  for (auto& pair : problems)
-    BenchmarkRunner::run(N, pair.first, pair.second);
+  if (run_all)
+    for (auto& pair : problems)
+      BenchmarkRunner::run(N, pair.first, pair.second);
   return 0;
 }
