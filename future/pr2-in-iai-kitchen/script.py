@@ -34,7 +34,8 @@ rank = robot.rankInConfiguration ['r_shoulder_lift_joint']
 q_goal [rank] = 0.5
 rank = robot.rankInConfiguration ['r_elbow_flex_joint']
 q_goal [rank] = -0.5
-vf.loadObstacleModel ("package://iai_maps/urdf/kitchen_area.urdf", "kitchen")
+vf.loadObstacleModel ("package://hpp_tutorial/urdf/kitchen_area.urdf",
+                      "kitchen")
 ps.selectPathValidation ("Progressive", 0.025)
 import datetime as dt
 totalTime = dt.timedelta (0)

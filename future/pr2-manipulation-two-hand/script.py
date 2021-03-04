@@ -29,8 +29,7 @@ class Box (object):
   urdfSuffix = ""
   srdfSuffix = ""
 class Environment (object):
-  packageName = 'iai_maps'
-  meshPackageName = 'iai_maps'
+  packageName = 'hpp_tutorial'
   urdfName = 'kitchen_area'
   urdfSuffix = ""
   srdfSuffix = ""
