@@ -71,8 +71,8 @@ install(FILES
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/construction-set)
 
 install(FILES
-  future/hrp2-on-the-ground/script.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/hrp2-on-the-ground)
+  future/pyrene-on-the-ground/script.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/pyrene-on-the-ground)
 
 install(FILES
   future/pr2-in-iai-kitchen/script.py
@@ -108,7 +108,7 @@ set(ALL_GENERATED_IMAGES
   "${CMAKE_BINARY_DIR}/images/baxter-two-arms-three-boxes.svg"
   "${CMAKE_BINARY_DIR}/images/baxter-two-arms-two-boxes.svg"
   "${CMAKE_BINARY_DIR}/images/construction-set.svg"
-  "${CMAKE_BINARY_DIR}/images/hrp2-on-the-ground.svg"
+  "${CMAKE_BINARY_DIR}/images/pyrene-on-the-ground.svg"
   "${CMAKE_BINARY_DIR}/images/pr2-in-iai-kitchen.svg"
   "${CMAKE_BINARY_DIR}/images/pr2-manipulation-kitchen.svg"
   "${CMAKE_BINARY_DIR}/images/pr2-manipulation-two-hand.svg"
@@ -116,7 +116,7 @@ set(ALL_GENERATED_IMAGES
   "${CMAKE_BINARY_DIR}/images/ur3-spheres.svg"
   "${CMAKE_BINARY_DIR}/images/ur5-spline-optimization.svg"
   "${CMAKE_BINARY_DIR}/images/cpp/pr2_in_iai_maps.svg"
-  "${CMAKE_BINARY_DIR}/images/cpp/hrp2_on_the_ground.svg"
+  "${CMAKE_BINARY_DIR}/images/cpp/pyrene_on_the_ground.svg"
   "${CMAKE_BINARY_DIR}/images/cpp/implicit_versus_explicit_Explicit left hand.svg"
   "${CMAKE_BINARY_DIR}/images/cpp/implicit_versus_explicit_Explicit right hand.svg"
   "${CMAKE_BINARY_DIR}/images/cpp/implicit_versus_explicit_Implicit both hands.svg"
@@ -131,6 +131,5 @@ add_custom_command(OUTPUT ${ALL_GENERATED_IMAGES}
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 add_custom_target(images DEPENDS ${ALL_GENERATED_IMAGES})
-add_dependencies(doc images)
 endif()
 ADD_SUBDIRECTORY(python)

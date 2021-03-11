@@ -68,7 +68,7 @@ class pr2_in_iai_maps : public BenchmarkCase {
       hpp::pinocchio::urdf::loadModel (obstacle, 0,
           "", // no prefix,
           "anchor", // root joint type,
-          "package://iai_maps/urdf/kitchen_area.urdf", "");
+          "package://hpp_tutorial/urdf/kitchen_area.urdf", "");
       obstacle->controlComputation (JOINT_POSITION);
       ps->addObstacle (obstacle, true, true);
 

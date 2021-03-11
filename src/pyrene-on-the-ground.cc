@@ -95,32 +95,33 @@ void createConstraints (ProblemSolverPtr_t ps, Configuration_t q0,
   // Complement left foot
   // unused at the moment.
 
-
-    // left hand closed
-  addLockedJoint (ps, "LARM_JOINT6" , { 0.1, } );
-  addLockedJoint (ps, "LHAND_JOINT0", { 0.0, } );
-  addLockedJoint (ps, "LHAND_JOINT1", { 0.0, } );
-  addLockedJoint (ps, "LHAND_JOINT2", { 0.0, } );
-  addLockedJoint (ps, "LHAND_JOINT3", { 0.0, } );
-  addLockedJoint (ps, "LHAND_JOINT4", { 0.0, } );
-
-    // right hand closed
-  addLockedJoint (ps, "RARM_JOINT6" , { 0.1, } );
-  addLockedJoint (ps, "RHAND_JOINT0", { 0.0, } );
-  addLockedJoint (ps, "RHAND_JOINT1", { 0.0, } );
-  addLockedJoint (ps, "RHAND_JOINT2", { 0.0, } );
-  addLockedJoint (ps, "RHAND_JOINT3", { 0.0, } );
-  addLockedJoint (ps, "RHAND_JOINT4", { 0.0, } );
+  // lock hands and torso
+  addLockedJoint (ps, "gripper_left_inner_double_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_fingertip_1_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_fingertip_2_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_inner_single_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_fingertip_3_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_left_motor_single_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_inner_double_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_fingertip_1_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_fingertip_2_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_inner_single_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_fingertip_3_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_joint" , { 0, } );
+  addLockedJoint (ps, "gripper_right_motor_single_joint" , { 0, } );
+  addLockedJoint (ps, "torso_1_joint" , { 0, } );
+  addLockedJoint (ps, "torso_2_joint" , { 0.006761, } );
 }
 
 /**
-\brief HRP2 on the ground
+\brief Pyrene on the ground
 
-See \ref hpp_benchmark_cpp_hrp2_on_the_ground "the results".
+See \ref hpp_benchmark_cpp_pyrene_on_the_ground "the results".
 
 \ingroup hpp_benchmark_cpp
  */
-class hrp2_on_the_ground : public BenchmarkCase {
+class pyrene_on_the_ground : public BenchmarkCase {
   private:
     ProblemSolverPtr_t ps;
     Configuration_t q_init, q_goal;
@@ -131,12 +132,13 @@ class hrp2_on_the_ground : public BenchmarkCase {
       ps = ProblemSolver::create ();
 
       // Create robot
-      DevicePtr_t device = ps->createRobot ("hrp2_14");
+      DevicePtr_t device = ps->createRobot ("pyrene");
       urdf::loadModel (device, 0,
           "", // no prefix,
           "freeflyer", // root joint type,
-          "package://hrp2_14_description/urdf/hrp2_14_capsule.urdf",
-          "package://hrp2_14_description/srdf/hrp2_14_capsule.srdf");
+	  "package://example-robot-data/robots/talos_data/robots/"
+	  "talos_full_v2.urdf",
+          "package://example-robot-data/robots/talos_data/srdf/talos.srdf");
       device->controlComputation ((Computation_t)(JOINT_POSITION | JACOBIAN));
       ps->robot (device);
 
@@ -148,37 +150,69 @@ class hrp2_on_the_ground : public BenchmarkCase {
       device->rootJoint()->upperBound (2, 1);
 
       // Create and add constraints
-      Configuration_t q0 (device->model().referenceConfigurations["half_sitting"]);
-      q0[2] = 0.648702;
-      createConstraints(ps, q0, "LLEG_JOINT5", "RLEG_JOINT5");
+      Configuration_t q0 (device->configSize());
+      q0 << 0, 0, 1.0192720229567027, 0, 0, 0, 1, 0.0, 0.0, -0.411354, 0.859395,
+	-0.448041, -0.001708, 0.0, 0.0, -0.411354, 0.859395, -0.448041,
+	-0.001708, 0, 0.006761, 0.25847, 0.173046, -0.0002, -0.525366, 0, 0,
+	0.1, 0, 0, 0, 0, 0, 0, 0, -0.25847, -0.173046, 0.0002, -0.525366, 0, 0,
+	0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+      createConstraints(ps, q0, "leg_left_6_joint", "leg_right_6_joint");
       ps->addNumericalConstraintToConfigProjector ("proj", "relative-com", 0);
       ps->addNumericalConstraintToConfigProjector ("proj", "relative-pose", 0);
       ps->addNumericalConstraintToConfigProjector ("proj", "pose-left-foot", 0);
 
-      ps->addNumericalConstraintToConfigProjector ("proj", "LARM_JOINT6" , 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "LHAND_JOINT0", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "LHAND_JOINT1", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "LHAND_JOINT2", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "LHAND_JOINT3", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "LHAND_JOINT4", 0);
+      ps->addNumericalConstraintToConfigProjector ("proj","gripper_left_inner_double_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_fingertip_1_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_fingertip_2_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_inner_single_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_fingertip_3_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_left_motor_single_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_inner_double_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_fingertip_1_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_fingertip_2_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_inner_single_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_fingertip_3_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "gripper_right_motor_single_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "torso_1_joint" , 0);
+      ps->addNumericalConstraintToConfigProjector ("proj", "torso_2_joint" , 0);
 
-      ps->addNumericalConstraintToConfigProjector ("proj", "RARM_JOINT6" , 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "RHAND_JOINT0", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "RHAND_JOINT1", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "RHAND_JOINT2", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "RHAND_JOINT3", 0);
-      ps->addNumericalConstraintToConfigProjector ("proj", "RHAND_JOINT4", 0);
 
       // Create initial and final configuration
       q_init.resize(device->configSize());
       q_init <<
-        0.0, 0.0, 0.705, 0., 0., 0., 1.0, 0.0, 0.0, 0.0, 0.0, -0.4, 0, -1.2, -1.0, 0.0, 0.0, 0.174532, -0.174532, 0.174532, -0.174532, 0.174532, -0.174532, 0.261799, -0.17453, 0.0, -0.523599, 0.0, 0.0, 0.174532, -0.174532, 0.174532, -0.174532, 0.174532, -0.174532, 0.0, 0.0, -0.453786, 0.872665, -0.418879, 0.0, 0.0, 0.0, -0.453786, 0.872665, -0.418879, 0.0;
+        0.46186525119743765, 0.7691484390667176, 1.0, 0.044318662659833724,
+	-0.0108631325758057, -0.0005624014939687202, 0.9989582234484302,
+	0.007182038754728065, -0.07804157609345573, -0.45119414082769843,
+	0.9175221606997885, -0.44402665063685365, -0.012200787668632173,
+	0.007200628661317587, -0.0788724231291963, -0.4956000845048934,
+	1.009916799073695, -0.49201388832345117, -0.011369733964913645, 0.0,
+	0.006761, 0.2408808670823526, 0.28558871367875255, 0.021347338765649856,
+	-0.5979935578118766, -0.0014717027925961507, 0.006759032911476202,
+	0.08832103581416396, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+	1.0392843760345567, -0.10575191252250002, -0.05668798069441503,
+	-1.7498341362736458, 0.0022744473854138473, 0.0015716871843022243,
+	0.07078184761729372, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+	-0.00020052684970875304, 0.00019305414086825983;
       if (!ps->constraints ()->apply (q_init))
         throw std::runtime_error("Failed to apply constraint to init configuration.");
 
       q_goal.resize(device->configSize());
       q_goal <<
-        0.0, 0.0, 0.705, 0., 0., 0., 1., 0.0, 0.0, 0.0, 0.0, 1.0, 0, -1.4, -1.0, 0.0, 0.0, 0.174532, -0.174532, 0.174532, -0.174532, 0.174532, -0.174532, 0.261799, -0.17453, 0.0, -0.523599, 0.0, 0.0, 0.174532, -0.174532, 0.174532, -0.174532, 0.174532, -0.174532, 0.0, 0.0, -0.453786, 0.872665, -0.418879, 0.0, 0.0, 0.0, -0.453786, 0.872665, -0.418879, 0.0;
+        -0.03792613133823603, 0.24583989035169654, 1.0, 0.008581421388221004,
+	0.044373915255123464, -0.0006050481369481731, 0.9989779520933587,
+	0.0011692308149178052, -0.011583002652064677, -0.5522315456639073,
+	0.9525259684676938, -0.4890594525896807, -0.007366718494771048,
+	0.0011679806161439602, -0.01159704912053673, -0.5610095845869443,
+	0.9704046648090222, -0.49816012449736746, -0.007352616506901346, 0.0,
+	0.006761, 0.25575424894162485, 0.21391256924828497,
+	0.006460912367916318, -0.5673886888192637, -0.0007964566272850148,
+	0.0027266557203091918, 0.09323792816834059, 0.0, 0.0, 0.0, 0.0, 0.0,
+	0.0, 0.0, -0.5020992312243198, -0.770681876188843, 2.42600766027,
+	-1.8794064100743089, 0.0019251455338804122, 0.007445905986286772,
+	0.06939811636044525, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+	-0.0013061717130372818, 4.856617592856522e-05;
       if (!ps->constraints ()->apply (q_goal))
         throw std::runtime_error("Failed to apply constraint to goal configuration.");
 
@@ -218,4 +252,4 @@ class hrp2_on_the_ground : public BenchmarkCase {
 } // namespace benchmark
 } // namespace hpp
 
-REGISTER(::hpp::benchmark::hrp2_on_the_ground, hrp2_on_the_ground);
+REGISTER(::hpp::benchmark::pyrene_on_the_ground, pyrene_on_the_ground);
