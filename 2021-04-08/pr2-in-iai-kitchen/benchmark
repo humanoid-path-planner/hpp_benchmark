@@ -1,0 +1,43 @@
+0:00:00.917899
+Number nodes: 14
+0:00:04.152974
+Number nodes: 64
+0:00:03.403411
+Number nodes: 54
+0:00:02.062115
+Number nodes: 33
+0:00:04.476597
+Number nodes: 64
+0:00:02.701258
+Number nodes: 39
+0:00:02.930898
+Number nodes: 43
+0:00:19.647969
+Number nodes: 288
+0:00:03.600296
+Number nodes: 54
+0:00:06.361518
+Number nodes: 108
+0:00:07.296394
+Number nodes: 133
+0:00:20.796038
+Number nodes: 319
+0:00:01.755165
+Number nodes: 24
+0:00:03.119042
+Number nodes: 59
+0:00:09.897945
+Number nodes: 144
+0:00:05.823272
+Number nodes: 85
+0:00:02.811379
+Number nodes: 34
+0:00:07.047013
+Number nodes: 118
+0:00:01.637229
+Number nodes: 24
+0:00:04.731387
+Number nodes: 79
+Average time: 5.75848995
+Average number nodes: 89.0
+>>> v=vf.createViewer()

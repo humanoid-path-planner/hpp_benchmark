@@ -20,6 +20,7 @@ from state_name import StateName
 from visibility_prm import VisibilityPRM
 import time, sys
 
+
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
 parser.add_argument('--display', action='store_true')
