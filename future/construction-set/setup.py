@@ -139,14 +139,6 @@ for i in range (nSphere):
                                      "sphere{0}/root_joint".format (i),
                                      [0, 0, 0.075, 0, 0, 0, 1],
                                      [False, False, True, True, True, False])
-  # combination of pre-placement and complement
-  ps.createLockedJoint (preplacementName + '/hold',
-                        "sphere{0}/root_joint".format (i),
-                        [0, 0, 0.075, 0, 0, 0, 1],
-                        [Equality, Equality, EqualToZero,
-                         EqualToZero, EqualToZero, Equality])
-  ps.registerConstraints(preplacementName, placementName + '/complement',
-                         preplacementName + '/hold')
 
 for i in range (nCylinder):
   # placement constraint
@@ -157,23 +149,22 @@ for i in range (nCylinder):
                                      [False, False, True, True, True, False])
 
   # placement complement
-  constraintName = "place_cylinder{0}".format (i)
   ps.createTransformationConstraint (placementName + "/complement", "",
                                      "cylinder{0}/root_joint".format (i),
                                      [0, 0, 0.025, 0, 0, 0, 1],
                                      [True, True, False, False, False, True])
   ps.setConstantRightHandSide(placementName + "/complement", False)
+  # combination of placement and complement
+  ps.createLockedJoint (placementName + '/hold',
+                        "cylinder{0}/root_joint".format (i),
+                        [0, 0, 0.025, 0, 0, 0, 1],
+                        [Equality, Equality, EqualToZero,
+                         EqualToZero, EqualToZero, Equality])
+  ps.registerConstraints(placementName, placementName + '/complement',
+                         placementName + '/hold')
   # preplacement constraint
   preplacementName = "preplace_cylinder{0}".format (i)
   ps.createTransformationConstraint (preplacementName, "",
                                      "cylinder{0}/root_joint".format (i),
                                      [0, 0, 0.075, 0, 0, 0, 1],
                                      [False, False, True, True, True, False])
-  # combination of pre-placement and complement
-  ps.createLockedJoint (preplacementName + '/hold',
-                        "cylinder{0}/root_joint".format (i),
-                        [0, 0, 0.075, 0, 0, 0, 1],
-                        [Equality, Equality, EqualToZero,
-                         EqualToZero, EqualToZero, Equality])
-  ps.registerConstraints(preplacementName, placementName + '/complement',
-                         preplacementName + '/hold')
