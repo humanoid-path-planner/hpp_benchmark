@@ -11,7 +11,7 @@ import os
 from argparse import ArgumentParser
 from math import pi, fabs
 from hpp.corbaserver.manipulation import Client, ConstraintGraph, Rule, \
-    ConstraintGraphFactory, ProblemSolver
+    ConstraintGraphFactory, ProblemSolver, Constraints
 from hpp.corbaserver.manipulation.ur5 import Robot
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.corbaserver import loadServerPlugin
@@ -102,14 +102,6 @@ for i in range (nSphere):
                                      [0, 0, 0.1, 0, 0, 0, 1],
                                      [False, False, True, True, True, False])
   ps.setConstantRightHandSide(preplacementName, True)
-  # combination of pre-placement and complement
-  ps.createLockedJoint (preplacementName + '/hold',
-                        "sphere{0}/root_joint".format (i),
-                        [0, 0, 0.1, 0, 0, 0, 1],
-                        [Equality, Equality, EqualToZero,
-                         EqualToZero, EqualToZero, Equality])
-  ps.registerConstraints(preplacementName, placementName + '/complement',
-                         preplacementName + '/hold')
 q_init = [pi/6, -pi/2, pi/2, 0, 0, 0,
           0.2, 0, 0.02, 0, 0, 0, 1,
           0.3, 0, 0.02, 0, 0, 0, 1,]
@@ -134,6 +126,7 @@ if lang == 'py':
   factory.setGrippers(grippers)
   factory.setObjects(objects, handlesPerObject, contactsPerObject)
   factory.generate()
+
 for e in ['ur3/gripper > sphere0/handle | f_ls',
           'ur3/gripper > sphere1/handle | f_ls'] :
   cg.setWeight(e, 100)
@@ -141,6 +134,15 @@ for e in ['ur3/gripper < sphere0/handle | 0-0_ls',
           'ur3/gripper < sphere1/handle | 0-1_ls'] :
   cg.setWeight(e, 100)
 ps.selectPathValidation ("Dichotomy", 0)
+
+for i in range(nSphere):
+  e = 'ur3/gripper > sphere{}/handle | f_23'.format(i)
+  cg.addConstraints(edge = e, constraints = Constraints(\
+    numConstraints=["place_sphere{}/complement".format(i),]))
+  e = 'ur3/gripper < sphere{}/handle | 0-{}_32'.format(i,i)
+  cg.addConstraints(edge = e, constraints = Constraints(\
+    numConstraints=["place_sphere{}/complement".format(i),]))
+
 cg.initialize()
 
 # Run benchmark
