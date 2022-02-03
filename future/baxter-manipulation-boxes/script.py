@@ -33,8 +33,7 @@ goal = [1, 0]
 # Define classes for the objects {{{4
 class Table (object):
   rootJointType = "anchor"
-  packageName = 'iai_maps'
-  meshPackageName = 'hpp_tutorial'
+  packageName = 'hpp_tutorial'
   urdfName = 'table'
   urdfSuffix = ""
   srdfSuffix = ""
@@ -53,7 +52,7 @@ robot = Robot ('baxter-manip', 'baxter')
 ps = ProblemSolver (robot)
 vf = ViewerFactory (ps)
 #robot.setRootJointPosition ("baxter" , [-3.2,-3.9, 0.926, 1, 0, 0, 0])
-robot.setRootJointPosition ("baxter" , [-0.8,0.8, 0.926, 0, 0, 0, 1])
+robot.setRootJointPosition ("baxter" , [0, 0, 0.926, 0, 0, 0, 1])
 vf.loadEnvironmentModel (Table, "table")
 boxes = list()
 for i in range(K):
@@ -70,7 +69,7 @@ q_init = robot.getCurrentConfig ()
 rankB = list()
 for i in range(K):
   rankB.append (robot.rankInConfiguration [boxes[i] + '/root_joint'])
-bb = [-0.3, -0.4, 0.7, 0.9]
+bb = [0.7, 0.8, 0., 0.1]
 c = sqrt (2) / 2
 xstep = (bb[1] - bb[0]) / (nBoxPerLine - 1) if nBoxPerLine > 1 else (bb[1] - bb[0])
 nbCols = int(K * 1. / nBoxPerLine + 0.5)
@@ -80,7 +79,7 @@ for i in range(K):
   iC = (i - iL) / nBoxPerLine
   x = bb[0] + xstep * iL
   y = bb[2] + xstep * iC
-  q_init [rankB[i]:rankB[i]+7] = [x, y, 0.746, 0, 0, -c, c]
+  q_init [rankB[i]:rankB[i]+7] = [x, y, 0.746, 0, -c, 0, c]
 q_goal = q_init [::]
 for i in range(K):
   r  = rankB[i]
