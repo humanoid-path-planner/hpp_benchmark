@@ -328,10 +328,8 @@ ps.clearConfigValidations()
 cg.initialize()
 
 c = sqrt(2)/2
-q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
-                           0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
-                           0, -0.15, 0.025, 0, 0, 0, 1,
-                          0.5, -0.08, 0.025, 0, 0, 0, 1]
 ps.setInitialConfig(q0)
-ps.addGoalConfig(q_goal)
+ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
+                       'cylinder0/magnet1 grasps sphere1/magnet',
+                       'place_cylinder0'])
 ps.setMaxIterPathPlanning(100)
