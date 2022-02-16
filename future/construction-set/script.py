@@ -20,6 +20,7 @@ from state_name import StateName
 from visibility_prm import VisibilityPRM
 import time, sys
 from math import sqrt
+import typing as T
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
@@ -329,7 +330,28 @@ cg.initialize()
 
 c = sqrt(2)/2
 ps.setInitialConfig(q0)
+
+###### Uncomment this to test the code with goal defined as a configuration
+# q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
+#                            0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
+#                            0, -0.15, 0.025, 0, 0, 0, 1,
+#                           0.5, -0.08, 0.025, 0, 0, 0, 1]
+# ps.addGoalConfig(q_goal)
+###### Goal defined as a configuration
+
+###### Uncomment this to test the code with goal defined as a set of constraints
+# Create constraint for robot arms to go back to original configuration when done
+armConstraints: T.List[str] = []
+jointRanks: T.Dict[str, int] = robot.rankInConfiguration
+for joint in robot.getJointNames():
+  if joint[:3] in ['r0/', 'r1/']:
+    constraint = 'locked_' + joint
+    ps.createLockedJoint(constraint, joint,
+                        q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
+    armConstraints.append(constraint)
 ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
                        'cylinder0/magnet1 grasps sphere1/magnet',
-                       'place_cylinder0'])
+                       'place_cylinder0', *armConstraints])
+###### Goal defined as a set of constraint
+
 ps.setMaxIterPathPlanning(100)
