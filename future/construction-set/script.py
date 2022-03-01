@@ -26,6 +26,8 @@ parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
 parser.add_argument('--display', action='store_true')
 parser.add_argument('--run', action='store_true')
+parser.add_argument('--goalConfig', action='store_true')
+parser.add_argument('--bigGraph', action='store_true')
 args = parser.parse_args()
 
 # Remove joint bound validation
@@ -45,7 +47,7 @@ devel_dir = os.getenv ('DEVEL_DIR')
 def makeRule (grasps):
   '''
   Build a rule that will generate a state where each specified gripper will
-  grasp the specify handle.
+  grasp the specified handle.
   This rule is used in the construction of the constraint graph to generate the
   corresponding state
   '''
@@ -59,6 +61,25 @@ def makeRule (grasps):
       _grippers.append (g)
   _handles += (len (_grippers) - len (_handles)) * ['^$']
   return Rule (grippers = _grippers, handles = _handles, link = True)
+
+def makeForbid (g, h):
+  '''
+  Build a rule that will forbid a state where each specified gripper will
+  grasp the specified handle.
+  This rule is used in the construction of the constraint graph to generate the
+  corresponding state
+  '''
+  _grippers = list ()
+  _handles = list ()
+
+  _grippers.append (g)
+  _handles.append (h)
+  for g in grippers:
+    if not g in _grippers:
+      _grippers.append (g)
+  _handles += (len (_grippers) - len (_handles)) * ['.*']
+  return Rule (grippers = _grippers, handles = _handles, link = False)
+
 def getTransitionConnectingStates (graph, s1, s2):
   '''
     Get transition edge connecting two states of the constraint graph
@@ -80,7 +101,7 @@ def getEdges (graph, nodes, exploreNodes):
     - graph: the manipulation constraint graph,
     - nodes: list of nodes the solution path should visit,
     - exploreNodes: states in which to perform path planning to cross an edge
-                    this list contains the same number of element as the
+                    this list contains the same number of elements as the
                     resulting list of edges.
   Return
     - edges: list of edges the resulting path should cross,
@@ -139,81 +160,124 @@ while i < nCylinder:
 q0 = q0_r0 + q0_r1 + sum (q0_spheres, []) + sum (q0_cylinders, [])
 if args.display:
   v (q0)
-# List of nodes composing the assembly sequence
-nodes = list ()
-# List of rules that define all the nodes
-rules = list ()
-# List of grasps for each node. From any node to the next one, one grasp is
-# added or removed
-grasps = set ()
-# list of nodes that are explored to cross each edge
-exploreNodes = list ()
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-# grasp sphere0
-grasps.add (('r0/gripper', 'sphere0/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# grasp cylinder0
-grasps.add (('r1/gripper', 'cylinder0/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# assemble cylinder0 and sphere0
-grasps.add (('cylinder0/magnet0', 'sphere0/magnet'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# release sphere0
-grasps.remove (('r0/gripper', 'sphere0/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-1])
-# grasp sphere1
-grasps.add (('r0/gripper', 'sphere1/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# assemble sphere1
-grasps.add (('cylinder0/magnet1', 'sphere1/magnet'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# release sphere1
-grasps.remove (('r0/gripper', 'sphere1/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
-# release cylinder0 : put assembly on the ground
-grasps.remove (('r1/gripper', 'cylinder0/handle'))
-nodes.append (StateName (grasps))
-rules.append (makeRule (grasps = grasps))
-exploreNodes.append (nodes [-2])
 
-ps.selectPathValidation ('Progressive', 0.02)
+if not args.bigGraph:
+  # List of nodes composing the assembly sequence
+  nodes = list ()
+  # List of rules that define all the nodes
+  rules = list ()
+  # List of grasps for each node. From any node to the next one, one grasp is
+  # added or removed
+  grasps = set ()
+  # list of nodes that are explored to cross each edge
+  exploreNodes = list ()
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  # grasp sphere0
+  grasps.add (('r0/gripper', 'sphere0/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # grasp cylinder0
+  grasps.add (('r1/gripper', 'cylinder0/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # assemble cylinder0 and sphere0
+  grasps.add (('cylinder0/magnet0', 'sphere0/magnet'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # release sphere0
+  grasps.remove (('r0/gripper', 'sphere0/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-1])
+  # grasp sphere1
+  grasps.add (('r0/gripper', 'sphere1/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # assemble sphere1
+  grasps.add (('cylinder0/magnet1', 'sphere1/magnet'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # release sphere1
+  grasps.remove (('r0/gripper', 'sphere1/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
+  # release cylinder0 : put assembly on the ground
+  grasps.remove (('r1/gripper', 'cylinder0/handle'))
+  nodes.append (StateName (grasps))
+  rules.append (makeRule (grasps = grasps))
+  exploreNodes.append (nodes [-2])
 
-cg = ConstraintGraph (robot, 'assembly')
-factory = ConstraintGraphFactory (cg)
-factory.setGrippers (grippers)
-#factory.environmentContacts (['table/pancake_table_table_top'])
-factory.setObjects (objects, handlesPerObjects, shapesPerObject)
-factory.setRules (rules)
-factory.generate ()
-sm = SecurityMargins(ps, factory, ["r0", "r1", "sphere0", "sphere1",
-                                   "cylinder0", "cylinder1"])
-sm.defaultMargin = 0.02
-sm.apply()
-cg.initialize ()
-edges, loops = getEdges (graph = cg, nodes = nodes, exploreNodes = exploreNodes)
-ps.selectPathProjector ('Progressive', .05)
-## Add a node to move robots in initial configurations
-nodes.append (nodes [-1])
-edges.append (getTransitionConnectingStates (graph = cg, s1 = nodes [-2],
-                                             s2 = nodes [-1]))
-loops.append (getTransitionConnectingStates (graph = cg, s1 = nodes [-1],
-                                             s2 = nodes [-1]))
-exploreNodes.append (nodes [-1])
+  ps.selectPathValidation ('Progressive', 0.02)
+
+  cg = ConstraintGraph (robot, 'assembly')
+  factory = ConstraintGraphFactory (cg)
+  factory.setGrippers (grippers)
+  #factory.environmentContacts (['table/pancake_table_table_top'])
+  factory.setObjects (objects, handlesPerObjects, shapesPerObject)
+  factory.setRules (rules)
+  factory.generate ()
+  sm = SecurityMargins(ps, factory, ["r0", "r1", "sphere0", "sphere1",
+                                    "cylinder0", "cylinder1"])
+  sm.defaultMargin = 0.02
+  sm.apply()
+  cg.initialize ()
+  edges, loops = getEdges (graph = cg, nodes = nodes, exploreNodes = exploreNodes)
+  ps.selectPathProjector ('Progressive', .05)
+  ## Add a node to move robots in initial configurations
+  nodes.append (nodes [-1])
+  edges.append (getTransitionConnectingStates (graph = cg, s1 = nodes [-2],
+                                              s2 = nodes [-1]))
+  loops.append (getTransitionConnectingStates (graph = cg, s1 = nodes [-1],
+                                              s2 = nodes [-1]))
+  exploreNodes.append (nodes [-1])
+
+else:
+  # List of rules that define all the nodes
+  rules = list ()
+
+  # Add rules to forbid certain types of grasp
+  rules.append(makeForbid('r0/gripper', 'cylinder0/handle'))
+  rules.append(makeForbid('r0/gripper', 'sphere0/magnet'))
+  rules.append(makeForbid('r0/gripper', 'sphere1/magnet'))
+
+  rules.append(makeForbid('r1/gripper', 'sphere0/handle'))
+  rules.append(makeForbid('r1/gripper', 'sphere1/handle'))
+  rules.append(makeForbid('r1/gripper', 'sphere0/magnet'))
+  rules.append(makeForbid('r1/gripper', 'sphere1/magnet'))
+
+  rules.append(makeForbid('cylinder0/magnet0', 'sphere0/handle'))
+  rules.append(makeForbid('cylinder0/magnet0', 'sphere1/handle'))
+  rules.append(makeForbid('cylinder0/magnet0', 'cylinder0/handle'))
+
+  rules.append(makeForbid('cylinder0/magnet1', 'sphere0/handle'))
+  rules.append(makeForbid('cylinder0/magnet1', 'sphere1/handle'))
+  rules.append(makeForbid('cylinder0/magnet1', 'cylinder0/handle'))
+
+  # Accept all those that are not forbidden
+  rules.append(Rule(grippers = grippers, handles=[".*"] * len(grippers), link = True))
+
+  ps.selectPathValidation ('Progressive', 0.02)
+
+  cg = ConstraintGraph (robot, 'assembly')
+  factory = ConstraintGraphFactory (cg)
+  factory.setGrippers (grippers)
+  #factory.environmentContacts (['table/pancake_table_table_top'])
+  factory.setObjects (objects, handlesPerObjects, shapesPerObject)
+  factory.setRules (rules)
+  factory.generate ()
+  sm = SecurityMargins(ps, factory, ["r0", "r1", "sphere0", "sphere1",
+                                    "cylinder0", "cylinder1"])
+  sm.defaultMargin = 0.02
+  sm.apply()
+  cg.initialize ()
+
 def generateSubGoals (q0, edges):
   '''
   Generate a list of subgoals
@@ -331,27 +395,28 @@ cg.initialize()
 c = sqrt(2)/2
 ps.setInitialConfig(q0)
 
-###### Uncomment this to test the code with goal defined as a configuration
-# q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
-#                            0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
-#                            0, -0.15, 0.025, 0, 0, 0, 1,
-#                           0.5, -0.08, 0.025, 0, 0, 0, 1]
-# ps.addGoalConfig(q_goal)
-###### Goal defined as a configuration
-
-###### Uncomment this to test the code with goal defined as a set of constraints
-# Create constraint for robot arms to go back to original configuration when done
-armConstraints: T.List[str] = []
-jointRanks: T.Dict[str, int] = robot.rankInConfiguration
-for joint in robot.getJointNames():
-  if joint[:3] in ['r0/', 'r1/']:
-    constraint = 'locked_' + joint
-    ps.createLockedJoint(constraint, joint,
-                        q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
-    armConstraints.append(constraint)
-ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
-                       'cylinder0/magnet1 grasps sphere1/magnet',
-                       'place_cylinder0', *armConstraints])
+if args.goalConfig:
+  ###### Use this to test the code with goal defined as a configuration
+  q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
+                             0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
+                             0, -0.15, 0.025, 0, 0, 0, 1,
+                            0.5, -0.08, 0.025, 0, 0, 0, 1]
+  ps.addGoalConfig(q_goal)
+  ###### Goal defined as a configuration
+else: 
+  ###### Use this to test the code with goal defined as a set of constraints
+  # Create constraint for robot arms to go back to original configuration when done
+  armConstraints: T.List[str] = []
+  jointRanks: T.Dict[str, int] = robot.rankInConfiguration
+  for joint in robot.getJointNames():
+    if joint[:3] in ['r0/', 'r1/']:
+      constraint = 'locked_' + joint
+      ps.createLockedJoint(constraint, joint,
+                          q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
+      armConstraints.append(constraint)
+  ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
+                        'cylinder0/magnet1 grasps sphere1/magnet',
+                        'place_cylinder0', *armConstraints])
 ###### Goal defined as a set of constraint
 
 ps.setMaxIterPathPlanning(100)

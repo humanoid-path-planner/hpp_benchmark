@@ -69,7 +69,7 @@ robot.setJointBounds ('r1/elbow_joint', [-2.6, 2.6])
 vf.loadEnvironmentModel (Ground, 'ground')
 
 nSphere = 2
-nCylinder = 2
+nCylinder = 1
 
 objects = list ()
 for i in range (nSphere):
