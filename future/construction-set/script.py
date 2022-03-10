@@ -414,8 +414,8 @@ else:
       ps.createLockedJoint(constraint, joint,
                           q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
       armConstraints.append(constraint)
-  ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
-                        'cylinder0/magnet1 grasps sphere1/magnet',
+  ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet/hold',
+                        'cylinder0/magnet1 grasps sphere1/magnet/hold',
                         'place_cylinder0', *armConstraints])
 ###### Goal defined as a set of constraint
 
