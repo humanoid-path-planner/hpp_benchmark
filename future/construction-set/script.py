@@ -21,6 +21,7 @@ from visibility_prm import VisibilityPRM
 import time, sys
 from math import sqrt
 import typing as T
+import re
 
 parser = ArgumentParser()
 parser.add_argument('-N', default=20, type=int)
@@ -33,6 +34,8 @@ args = parser.parse_args()
 # Remove joint bound validation
 ps.hppcorba.problem.clearConfigValidations()
 ps.addConfigValidation("CollisionValidation")
+
+allHandles = [handle for objHandles in handlesPerObjects for handle in objHandles]
 
 def cleanPaths (ps, solutions) :
   offset = 0
@@ -62,23 +65,33 @@ def makeRule (grasps):
   _handles += (len (_grippers) - len (_handles)) * ['^$']
   return Rule (grippers = _grippers, handles = _handles, link = True)
 
-def makeForbid (g, h):
+def forbidExcept (g: str, h: T.List[str]) -> T.List[Rule]:
   '''
-  Build a rule that will forbid a state where each specified gripper will
-  grasp the specified handle.
+  Build a list of rule that will forbid a state where a gripper matching the pattern
+  grasp any handle **other than** the specified handles.
   This rule is used in the construction of the constraint graph to generate the
   corresponding state
-  '''
-  _grippers = list ()
-  _handles = list ()
 
-  _grippers.append (g)
-  _handles.append (h)
-  for g in grippers:
-    if not g in _grippers:
-      _grippers.append (g)
-  _handles += (len (_grippers) - len (_handles)) * ['.*']
-  return Rule (grippers = _grippers, handles = _handles, link = False)
+  Args:
+    g: regex pattern for grippers
+    h: list of regex patterns for the only handles that apply for these grippers
+
+  '''
+  import ipdb; ipdb.set_trace()
+  gRegex = re.compile(g)
+  hRegex = [re.compile(handle) for handle in h]
+  forbiddenList: T.List[Rule] = list()
+  idForbidGrippers = [i for i in range(len(grippers))
+      if gRegex.match(grippers[i])]
+  # forbidden handles are those that don't match any of the specified patterns
+  forbidHandles = [handle for handle in allHandles if not any([
+      handlePattern.match(handle) for handlePattern in hRegex])]
+  for id in idForbidGrippers:
+    for handle in forbidHandles:
+      _handles = [handle if i == id else '.*' for i in range(len(grippers))]
+      forbiddenList.append(
+        Rule (grippers = grippers, handles = _handles, link = False))
+  return forbiddenList
 
 def getTransitionConnectingStates (graph, s1, s2):
   '''
@@ -242,23 +255,15 @@ else:
   # List of rules that define all the nodes
   rules = list ()
 
-  # Add rules to forbid certain types of grasp
-  rules.append(makeForbid('r0/gripper', 'cylinder0/handle'))
-  rules.append(makeForbid('r0/gripper', 'sphere0/magnet'))
-  rules.append(makeForbid('r0/gripper', 'sphere1/magnet'))
-
-  rules.append(makeForbid('r1/gripper', 'sphere0/handle'))
-  rules.append(makeForbid('r1/gripper', 'sphere1/handle'))
-  rules.append(makeForbid('r1/gripper', 'sphere0/magnet'))
-  rules.append(makeForbid('r1/gripper', 'sphere1/magnet'))
-
-  rules.append(makeForbid('cylinder0/magnet0', 'sphere0/handle'))
-  rules.append(makeForbid('cylinder0/magnet0', 'sphere1/handle'))
-  rules.append(makeForbid('cylinder0/magnet0', 'cylinder0/handle'))
-
-  rules.append(makeForbid('cylinder0/magnet1', 'sphere0/handle'))
-  rules.append(makeForbid('cylinder0/magnet1', 'sphere1/handle'))
-  rules.append(makeForbid('cylinder0/magnet1', 'cylinder0/handle'))
+  ### Add rules to forbid grasps except for the specifed ones
+  # r0/gripper can only grasp sphere handles
+  rules.extend(forbidExcept('^r0/gripper$', ['^sphere\\d*/handle$']))
+  # r1/gripper can only grasp cylinder handles
+  rules.extend(forbidExcept('^r1/gripper$', ['^cylinder0*/handle$']))
+  # magnets in cylinder0 can only grasp sphere magnets
+  rules.extend(forbidExcept('^cylinder0/magnet\\d*$', ['^sphere\\d*/magnet$']))
+  # cylinders other than cylinder0 are not considered in the graph
+  rules.extend(forbidExcept('^cylinder[1-9][0-9]*.*$', ['^$']))
 
   # Accept all those that are not forbidden
   rules.append(Rule(grippers = grippers, handles=[".*"] * len(grippers), link = True))
@@ -397,11 +402,19 @@ ps.setInitialConfig(q0)
 
 if args.goalConfig:
   ###### Use this to test the code with goal defined as a configuration
+  # Note that this config is only for 2 cylinders and 2 spheres
+  assert (nCylinder == 2 and nSphere == 2)
+  # uncomment to test the case when initial and final state are different
   q_goal = q0_r0 + q0_r1 + [-0.06202136144745322, -0.15, 0.025, c, 0, -c, 0,
-                             0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
-                             0, -0.15, 0.025, 0, 0, 0, 1,
+                            0.06202136144745322, -0.15, 0.025, c, 0,  c, 0,
+                            0, -0.15, 0.025, 0, 0, 0, 1,
                             0.5, -0.08, 0.025, 0, 0, 0, 1]
+  
+  ## uncomment to test the case when initial and final state are the same
+  # q_goal = [1.45] + q0[1:]
+
   ps.addGoalConfig(q_goal)
+
   ###### Goal defined as a configuration
 else: 
   ###### Use this to test the code with goal defined as a set of constraints
@@ -414,9 +427,20 @@ else:
       ps.createLockedJoint(constraint, joint,
                           q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
       armConstraints.append(constraint)
-  ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet/hold',
-                        'cylinder0/magnet1 grasps sphere1/magnet/hold',
+
+  ## Use this for the case when we need to place the finished product on table
+  ## and move robot arms back to original pose
+  ## there is only 1 goal state
+  ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
+                        'cylinder0/magnet1 grasps sphere1/magnet',
                         'place_cylinder0', *armConstraints])
-###### Goal defined as a set of constraint
+  ## Use this for the case when we only need to assemble the product
+  ## and move the robot arms back to original pose
+  ## there are multiple potential goal states
+  # ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
+  #                     'cylinder0/magnet1 grasps sphere1/magnet',
+  #                     *armConstraints])
+
+  ###### Goal defined as a set of constraint
 
 ps.setMaxIterPathPlanning(100)
