@@ -158,9 +158,14 @@ import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
 success = 0
+
 # Remove joint bound validation
 ps.hppcorba.problem.clearConfigValidations()
 ps.addConfigValidation("CollisionValidation")
+# Set parameters for States Path Finder
+ps.selectPathPlanner("StatesPathFinder")
+ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 10.0)
+ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 5)
 for i in range (args.N):
   ps.clearRoadmap ()
   ps.resetGoalConfigs ()

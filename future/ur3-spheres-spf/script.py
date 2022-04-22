@@ -148,6 +148,10 @@ cg.initialize()
 ps.setInitialConfig (q_init)
 ps.addGoalConfig (q_goal)
 ps.setMaxIterPathPlanning (5000)
+# Set parameters for States Path Finder
+ps.selectPathPlanner("StatesPathFinder")
+ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 10.0)
+ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 5)
 # Run benchmark
 #
 import datetime as dt

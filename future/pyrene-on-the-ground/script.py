@@ -89,8 +89,8 @@ for i in range (args.N):
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
-  except:
-    print ("Failed to plan path.")
+  except Exception as e:
+    print (f"Failed to plan path: {e}")
   else:
     success += 1
     totalTime += t2 - t1
@@ -99,6 +99,7 @@ for i in range (args.N):
     totalNumberNodes += n
     print(("Number nodes: " + str(n)))
 if args.N != 0:
+  print ("#" * 20)
   print (f"Number of rounds: {args.N}")
   print (f"Number of successes: {success}")
   print (f"Success rate: {success/ args.N * 100}%")
