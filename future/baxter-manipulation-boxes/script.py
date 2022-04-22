@@ -112,15 +112,15 @@ lockFingers = ["r_gripper_l_finger",
                "l_gripper_r_finger",
         ]
 for side in ["r", "l", ]:
-    ps.createLockedJoint(side + "_gripper_l_finger", "baxter/" + side + "_gripper_l_finger_joint", [ 0.02,])
-    ps.createLockedJoint(side + "_gripper_r_finger", "baxter/" + side + "_gripper_r_finger_joint", [-0.02,])
+  ps.createLockedJoint(side + "_gripper_l_finger", "baxter/" + side + "_gripper_l_finger_joint", [ 0.02,])
+  ps.createLockedJoint(side + "_gripper_r_finger", "baxter/" + side + "_gripper_r_finger_joint", [-0.02,])
 lockHead = ['head_pan',]
 ps.createLockedJoint ('head_pan', 'baxter/head_pan',
     [q_init[robot.rankInConfiguration['baxter/head_pan']]])
 for n in jointNames["baxterRightSide"]:
-    ps.createLockedJoint (n, n, [0,])
+  ps.createLockedJoint (n, n, [0,])
 for n in jointNames["baxterLeftSide"]:
-    ps.createLockedJoint (n, n, [0,])
+  ps.createLockedJoint (n, n, [0,])
 lockAll = lockFingers + lockHead
 # 4}}}
 # 3}}}
@@ -157,28 +157,39 @@ ps.addGoalConfig (q_goal_proj)
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
+success = 0
 # Remove joint bound validation
 ps.hppcorba.problem.clearConfigValidations()
 ps.addConfigValidation("CollisionValidation")
 for i in range (args.N):
-    ps.clearRoadmap ()
-    ps.resetGoalConfigs ()
-    ps.setInitialConfig (q_init_proj)
-    ps.addGoalConfig (q_goal_proj)
+  ps.clearRoadmap ()
+  ps.resetGoalConfigs ()
+  ps.setInitialConfig (q_init_proj)
+  ps.addGoalConfig (q_goal_proj)
+  try:
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
+  except:
+    print ("Failed to plan path.")
+  else:
+    success += 1
     totalTime += t2 - t1
     print (t2-t1)
     n = ps.numberNodes ()
     totalNumberNodes += n
     print ("Number nodes: " + str(n))
 if args.N != 0:
-  print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
-  print ("Average number nodes: " + str (totalNumberNodes/float(args.N)))
+  print (f"Number of rounds: {args.N}")
+  print (f"Number of successes: {success}")
+  print (f"Success rate: {success/ args.N * 100}%")
+  if success > 0:
+    print (f"Average time per success: {totalTime.total_seconds()/success}")
+    print (f"Average number nodes per success: {totalNumberNodes/success}")
+
 
 if args.display:
-    v = vf.createViewer ()
-    pp = PathPlayer (v)
-    if args.run:
-        pp(0)
+  v = vf.createViewer ()
+  pp = PathPlayer (v)
+  if args.run:
+    pp(0)

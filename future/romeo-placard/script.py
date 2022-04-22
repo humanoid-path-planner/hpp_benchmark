@@ -48,31 +48,31 @@ dimensionRegex = re.compile ("dimension ([0-9]*)")
 reducedDimRegex = re.compile ("reduced dimension ([0-9]*)")
 
 def getConstraintDimension (reduced = False):
-    cstr = ps.client.basic.problem.displayConstraints()
-    m = (reducedDimRegex if reduced else dimensionRegex).search (cstr)
-    return int(m.group(1))
+  cstr = ps.client.basic.problem.displayConstraints()
+  m = (reducedDimRegex if reduced else dimensionRegex).search (cstr)
+  return int(m.group(1))
 
 def createGraspConstraint(gripperName, handleName):
-    name = "Relative transformation " + gripperName + "/" + handleName
-    gjn, gpos = robot.getGripperPositionInJoint(gripperName)
-    hjn, hpos = robot.getHandlePositionInJoint(handleName)
-    ps.createTransformationConstraint (name, gjn, hjn, (Transform(gpos) * Transform(hpos).inverse()).toTuple(), [True] * 6)
-    return name
+  name = "Relative transformation " + gripperName + "/" + handleName
+  gjn, gpos = robot.getGripperPositionInJoint(gripperName)
+  hjn, hpos = robot.getHandlePositionInJoint(handleName)
+  ps.createTransformationConstraint (name, gjn, hjn, (Transform(gpos) * Transform(hpos).inverse()).toTuple(), [True] * 6)
+  return name
 
 def benchConstraints (constraints, lockDofs):
-    ps.client.basic.problem.resetConstraints()
-    ps.resetConstraints ()
-    ps.addNumericalConstraints ("test", constraints)
-    ps.addLockedJointConstraints ("test", lockDofs)
-    res = [None] * N
-    q   = [None] * N
-    err = [None] * N
-    start = time.time()
-    for i in range(N):
-        res[i], q[i], err[i] = ps.applyConstraints(qs[i])
-    duration = time.time() - start
-    # return res,q,err,duration
-    return float(res.count(True)) / N,duration / N
+  ps.client.basic.problem.resetConstraints()
+  ps.resetConstraints ()
+  ps.addNumericalConstraints ("test", constraints)
+  ps.addLockedJointConstraints ("test", lockDofs)
+  res = [None] * N
+  q   = [None] * N
+  err = [None] * N
+  start = time.time()
+  for i in range(N):
+      res[i], q[i], err[i] = ps.applyConstraints(qs[i])
+  duration = time.time() - start
+  # return res,q,err,duration
+  return float(res.count(True)) / N,duration / N
 
 ps = ProblemSolver (robot)
 # Remove joint bound validation
@@ -92,22 +92,22 @@ robot.setJointBounds (placard.name + '/root_joint', [-1,1,-1,1,0,1.5,-2.,2,
 ## Lock both hands
 locklhand = list()
 for j,v in robot.leftHandOpen.items():
-    locklhand.append ('romeo/' + j)
-    if type(v) is float or type(v) is int:
-        val = [v,]
-    else:
-        val = v;
-    ps.createLockedJoint ('romeo/' + j, robot.robotNames [0] + '/' + j, val)
+  locklhand.append ('romeo/' + j)
+  if type(v) is float or type(v) is int:
+      val = [v,]
+  else:
+      val = v;
+  ps.createLockedJoint ('romeo/' + j, robot.robotNames [0] + '/' + j, val)
 
 
 lockrhand = list()
 for j,v in robot.rightHandOpen.items():
-    lockrhand.append ('romeo/' + j)
-    if type(v) is float or type(v) is int:
-        val = [v,]
-    else:
-        val = v;
-    ps.createLockedJoint ('romeo/' + j, robot.robotNames [0] + '/' + j, val)
+  lockrhand.append ('romeo/' + j)
+  if type(v) is float or type(v) is int:
+      val = [v,]
+  else:
+      val = v;
+  ps.createLockedJoint ('romeo/' + j, robot.robotNames [0] + '/' + j, val)
 lockHands = lockrhand + locklhand
 
 ## Create static stability constraint
@@ -172,31 +172,40 @@ ps.selectPathProjector ("Progressive", .05)
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
+success = 0
 for i in range (args.N):
-    ps.clearRoadmap ()
-    ps.resetGoalConfigs ()
-    ps.setInitialConfig (q_init)
-    ps.addGoalConfig (q_goal)
+  ps.clearRoadmap ()
+  ps.resetGoalConfigs ()
+  ps.setInitialConfig (q_init)
+  ps.addGoalConfig (q_goal)
+  try:
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
+  except:
+    print ("Failed to plan path.")
+  else:
+    success += 1
     totalTime += t2 - t1
     print (t2-t1)
     n = ps.numberNodes ()
     totalNumberNodes += n
     print ("Number nodes: " + str(n))
 
-if args.N!=0:
-  print ("Average time: " +
-         str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
-  print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
+if args.N != 0:
+  print (f"Number of rounds: {args.N}")
+  print (f"Number of successes: {success}")
+  print (f"Success rate: {success/ args.N * 100}%")
+  if success > 0:
+    print (f"Average time per success: {totalTime.total_seconds()/success}")
+    print (f"Average number nodes per success: {totalNumberNodes/success}")
 
 if args.display:
-    v = vf.createViewer ()
-    v (q)
-    pp = PathPlayer(v)
-    if args.run:
-        pp(0)
+  v = vf.createViewer ()
+  v (q)
+  pp = PathPlayer(v)
+  if args.run:
+    pp(0)
 
 def toVector (s):
   return list(map (float, [x for x in s.split (" ") if x != ""]))
@@ -209,13 +218,13 @@ for i in range(N):
 implicitGraspConstraints = dict()
 explicitGraspConstraints = dict()
 for handles in handlesPerObjects:
-    for h in handles:
-        for g in grippers:
-            n = createGraspConstraint (g,h)
-            ne = g + " grasps " + h
-            cg.createGrasp (ne, g, h)
-            implicitGraspConstraints[(g,h)] = n
-            explicitGraspConstraints[(g,h)] = ne + "/hold"
+  for h in handles:
+    for g in grippers:
+      n = createGraspConstraint (g,h)
+      ne = g + " grasps " + h
+      cg.createGrasp (ne, g, h)
+      implicitGraspConstraints[(g,h)] = n
+      explicitGraspConstraints[(g,h)] = ne + "/hold"
 
 # List of grasps for each node. From any node to the next one, one grasp is
 # added or removed
@@ -238,11 +247,11 @@ benchGrasps.append (grasps.copy())
 iResults = dict()
 eResults = dict()
 for g in benchGrasps:
-    constraints = balanceConstraints + [ implicitGraspConstraints[c] for c in g ]
-    iResults[tuple (g)] = benchConstraints(constraints, lockHands)
+  constraints = balanceConstraints + [ implicitGraspConstraints[c] for c in g ]
+  iResults[tuple (g)] = benchConstraints(constraints, lockHands)
 
-    constraints = balanceConstraints + [ explicitGraspConstraints[c] for c in g ]
-    eResults[tuple (g)] = benchConstraints(constraints, lockHands)
+  constraints = balanceConstraints + [ explicitGraspConstraints[c] for c in g ]
+  eResults[tuple (g)] = benchConstraints(constraints, lockHands)
 
 name = dict ()
 name [(('romeo/l_hand', 'placard/low'), ('romeo/r_hand', 'placard/high'))] =\

@@ -47,16 +47,16 @@ ps.addNumericalConstraints ("balance", ["balance/relative-com",
 gripperJoints = filter(lambda x:x.startswith('gripper_'), robot.jointNames)
 lockedJoints = list()
 for j in gripperJoints:
-    ljName = "locked_" + j
-    value = q0[robot.rankInConfiguration[j]]
-    ps.createLockedJoint(ljName, j, [value,])
-    lockedJoints.append (ljName)
+  ljName = "locked_" + j
+  value = q0[robot.rankInConfiguration[j]]
+  ps.createLockedJoint(ljName, j, [value,])
+  lockedJoints.append (ljName)
 
 for j in ['torso_1_joint', 'torso_2_joint']:
-    ljName = "locked_" + j
-    value = q0[robot.rankInConfiguration[j]]
-    ps.createLockedJoint(ljName, j, [value,])
-    lockedJoints.append (ljName)
+  ljName = "locked_" + j
+  value = q0[robot.rankInConfiguration[j]]
+  ps.createLockedJoint(ljName, j, [value,])
+  lockedJoints.append (ljName)
 
 ps.addLockedJointConstraints ("locked-hands", lockedJoints)
 
@@ -79,19 +79,29 @@ assert res
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
+success = 0
 for i in range (args.N):
-    ps.client.problem.clearRoadmap ()
-    ps.resetGoalConfigs ()
-    ps.setInitialConfig (q1proj)
-    ps.addGoalConfig (q2proj)
+  ps.client.problem.clearRoadmap ()
+  ps.resetGoalConfigs ()
+  ps.setInitialConfig (q1proj)
+  ps.addGoalConfig (q2proj)
+  try:
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
+  except:
+    print ("Failed to plan path.")
+  else:
+    success += 1
     totalTime += t2 - t1
     print((t2-t1))
     n = len (ps.client.problem.nodes ())
     totalNumberNodes += n
     print(("Number nodes: " + str(n)))
-print(("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N))))
-print(("Average number nodes: " + str (totalNumberNodes/float (args.N))))
-
+if args.N != 0:
+  print (f"Number of rounds: {args.N}")
+  print (f"Number of successes: {success}")
+  print (f"Success rate: {success/ args.N * 100}%")
+  if success > 0:
+    print (f"Average time per success: {totalTime.total_seconds()/success}")
+    print (f"Average number nodes per success: {totalNumberNodes/success}")

@@ -140,18 +140,29 @@ q_goal = res [1]
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
+success = 0
 for i in range (args.N):
-    ps.clearRoadmap ()
-    ps.resetGoalConfigs ()
-    ps.setInitialConfig (q_init)
-    ps.addGoalConfig (q_goal)
+  ps.clearRoadmap ()
+  ps.resetGoalConfigs ()
+  ps.setInitialConfig (q_init)
+  ps.addGoalConfig (q_goal)
+  try:
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
+  except:
+    print ("Failed to plan path.")
+  else:
+    success += 1
     totalTime += t2 - t1
     print (t2-t1)
     n = ps.numberNodes ()
     totalNumberNodes += n
     print ("Number nodes: " + str(n))
-print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
-print ("Average number nodes: " + str (totalNumberNodes/float (args.N)))
+if args.N != 0:
+  print (f"Number of rounds: {args.N}")
+  print (f"Number of successes: {success}")
+  print (f"Success rate: {success/ args.N * 100}%")
+  if success > 0:
+    print (f"Average time per success: {totalTime.total_seconds()/success}")
+    print (f"Average number nodes per success: {totalNumberNodes/success}")
