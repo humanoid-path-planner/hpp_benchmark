@@ -297,6 +297,7 @@ for i in range (args.N):
     print ("Number nodes: " + str(n))
 
 if args.N != 0:
+  print ("#" * 20)
   print (f"Number of rounds: {args.N}")
   print (f"Number of successes: {success}")
   print (f"Success rate: {success/ args.N * 100}%")

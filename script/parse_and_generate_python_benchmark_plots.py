@@ -5,29 +5,14 @@ from generate_benchmark_plot import readCSV, generatePlot
 
 # To generate this list:
 # find 20*/* -type d | sed 's/^[^\/]*\///' | sort | uniq
-
 if len(sys.argv) > 2:
     benchmarks = sys.argv[2:]
 else:
-    benchmarks=[
-            "baxter-manipulation-boxes",
-            "baxter-manipulation-boxes-easy",
-            "baxter-two-arms-one-box",
-            "baxter-two-arms-three-boxes",
-            "baxter-two-arms-two-boxes",
-            "construction-set",
-            "hrp2-on-the-ground",
-            "kawada",
-            "path_validation_manipulation",
-            "pr2-in-iai-kitchen",
-            "pr2-ini-iai-kitchen",
-            "pr2-manipulation-kitchen",
-            "pr2-manipulation-two-hand",
-            "romeo-placard",
-            "ur3-spheres",
-            "ur5_path_projection",
-            "ur5-spline-optimization",
-            ]
+    script_name = "script.py"
+    benchmark_descr_dir = "./future" # folder that describe the benchmarks
+    # get names of all immediate subdirectories of "future/" that contain a script.py file
+    benchmarks = [f.name for f in os.scandir(benchmark_descr_dir) if f.is_dir()
+                and os.path.isfile(os.path.join(f.path, script_name))]
 
 root_dir="."
 script_dir="./script"
