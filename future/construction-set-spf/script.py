@@ -14,7 +14,7 @@ from math import pi, fabs
 import hpp
 from hpp.corbaserver.manipulation import ConstraintGraphFactory, Rule, \
   SecurityMargins
-from setup import ConstraintGraph, Constraints, grippers, handlesPerObjects, nCylinder, nSphere, objects, ps, robot, shapesPerObject, vf
+from setup import ConstraintGraph, Constraints, grippers, handlesPerObjects, nCylinder, nSphere, objects, ps, robot, shapesPerObject, vf, EqualToZero
 from hpp.gepetto import PathPlayer
 from state_name import StateName
 from math import sqrt
@@ -246,7 +246,9 @@ else:
     if joint[:3] in ['r0/', 'r1/']:
       constraint = 'locked_' + joint
       ps.createLockedJoint(constraint, joint,
-                          q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)])
+                          q0[jointRanks[joint]: jointRanks[joint] + robot.getJointConfigSize(joint)],
+                          [EqualToZero] * robot.getJointConfigSize(joint)
+                          )
       armConstraints.append(constraint)
 
   ## Use this for the case when we need to place the finished product on table
@@ -255,12 +257,32 @@ else:
   goalConstraints = ['cylinder0/magnet0 grasps sphere0/magnet',
                         'cylinder0/magnet1 grasps sphere1/magnet',
                         'place_cylinder0', *armConstraints]
+
   ## Use this for the case when we only need to assemble the product
   ## and move the robot arms back to original pose
   ## there are multiple potential goal states
   # goalConstraints = ['cylinder0/magnet0 grasps sphere0/magnet',
   #                     'cylinder0/magnet1 grasps sphere1/magnet',
   #                     *armConstraints]
+
+  ## Use this for the case when initial state is a potential goal state
+  ## Only 1 joint of robot arm moves
+  # constraint1 = "changed_locked_r0/shoulder_pan_joint"
+  # ps.createLockedJoint(constraint1, "r0/shoulder_pan_joint", [1.45],
+  #     [EqualToZero])
+  # goalConstraints = [constraint1]
+
+  ## Use this for the case when initial state is a potential goal state
+  ## Robot arm needs to move sphere to a specified location
+  ## NOT WORKING since placement complement for the sphere placement
+  ## is not properly propagated to previous waypoints.
+  # constraint1 = "changed_locked_r0/shoulder_pan_joint"
+  # ps.createLockedJoint(constraint1, "r0/shoulder_pan_joint", [1.45],
+  #     [EqualToZero])
+  # constraint2 = "changed_locked_sphere0/root_joint"
+  # ps.createLockedJoint(constraint2, "sphere0/root_joint",
+  #     [q0_spheres[0][0] + 0.1]+q0_spheres[0][1:], [EqualToZero] * 6)
+  # goalConstraints = [constraint1, constraint2]
 
   ###### Goal defined as a set of constraint
 
