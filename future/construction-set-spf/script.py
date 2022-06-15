@@ -205,6 +205,7 @@ else:
   sm.defaultMargin = 0.02
   sm.apply()
   cg.initialize ()
+  ps.selectPathProjector ('Progressive', .05)
 
 # Create a goal configuration with the construction set assembled.
 
@@ -213,8 +214,6 @@ ps.selectPathPlanner("StatesPathFinder")
 ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 10.0)
 ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 5)
 #ps.selectPathValidation('NoValidation', 0)
-
-cg.initialize()
 
 c = sqrt(2)/2
 ps.setInitialConfig(q0)
