@@ -143,6 +143,9 @@ for i in range(nSphere):
   cg.addConstraints(edge = e, constraints = Constraints(\
     numConstraints=["place_sphere{}/complement".format(i),]))
 
+# need to set path projector due to implicit constraints added above
+ps.selectPathProjector ("Progressive", 0.01)
+
 cg.initialize()
 
 ps.setInitialConfig (q_init)

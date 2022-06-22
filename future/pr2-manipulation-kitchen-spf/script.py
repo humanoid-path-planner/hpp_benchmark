@@ -123,6 +123,8 @@ factory.setGrippers (grippers)
 factory.environmentContacts (envSurfaces)
 factory.setObjects (boxes, handlesPerObject, objContactSurfaces)
 factory.setRules (rules)
+# add constraint of vertical motion of object
+# between graph inter placement and preplacement.
 factory.setPreplaceGuide(True)
 factory.generate ()
 cg.addConstraints (graph = True, constraints =\
