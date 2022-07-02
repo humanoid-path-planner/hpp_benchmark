@@ -211,8 +211,9 @@ else:
 
 # Set parameters for States Path Finder
 ps.selectPathPlanner("StatesPathFinder")
-ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 10.0)
-ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 5)
+ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
+ps.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
+ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 #ps.selectPathValidation('NoValidation', 0)
 
 c = sqrt(2)/2

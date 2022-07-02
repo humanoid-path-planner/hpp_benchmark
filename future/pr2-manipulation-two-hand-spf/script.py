@@ -142,8 +142,9 @@ ps.addGoalConfig (q_goal)
 ps.setMaxIterPathPlanning (5000)
 # Set parameters for States Path Finder
 ps.selectPathPlanner("StatesPathFinder")
-ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 10.0)
-ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 5)
+ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
+ps.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
+ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
