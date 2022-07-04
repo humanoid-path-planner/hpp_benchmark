@@ -127,12 +127,13 @@ if lang == 'py':
   factory.setObjects(objects, handlesPerObject, contactsPerObject)
   factory.generate()
 
-for e in ['ur3/gripper > sphere0/handle | f_ls',
-          'ur3/gripper > sphere1/handle | f_ls'] :
-  cg.setWeight(e, 100)
-for e in ['ur3/gripper < sphere0/handle | 0-0_ls',
-          'ur3/gripper < sphere1/handle | 0-1_ls'] :
-  cg.setWeight(e, 100)
+# Uncomment to help M-RRT pathplanner
+# for e in ['ur3/gripper > sphere0/handle | f_ls',
+#           'ur3/gripper > sphere1/handle | f_ls'] :
+#  cg.setWeight(e, 100)
+# for e in ['ur3/gripper < sphere0/handle | 0-0_ls',
+#          'ur3/gripper < sphere1/handle | 0-1_ls'] :
+#  cg.setWeight(e, 100)
 ps.selectPathValidation ("Dichotomy", 0)
 
 for i in range(nSphere):
