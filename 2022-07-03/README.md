@@ -1,0 +1,1 @@
+For this run of the benchmarks, the StatesPathFinder uses the same path projector as the problem. Moreover, the timeout for innerPlanner is not used for halting anymore, hence making the performance more reproducible and less dependent on the machine and the build mode (Release or Debug).

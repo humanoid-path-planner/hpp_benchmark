@@ -1,0 +1,106 @@
+0:00:00.962232
+Number nodes: 35
+0:00:00.393035
+Number nodes: 23
+0:00:01.455617
+Number nodes: 83
+0:00:05.911366
+Number nodes: 234
+0:00:02.016348
+Number nodes: 80
+0:00:01.624267
+Number nodes: 65
+0:00:00.908973
+Number nodes: 37
+0:00:02.010273
+Number nodes: 66
+0:00:02.040326
+Number nodes: 74
+0:00:01.418345
+Number nodes: 60
+0:00:00.932790
+Number nodes: 47
+0:00:00.391680
+Number nodes: 17
+0:00:02.077452
+Number nodes: 78
+0:00:00.921245
+Number nodes: 40
+0:00:05.607793
+Number nodes: 199
+0:00:03.139734
+Number nodes: 127
+0:00:00.527915
+Number nodes: 32
+0:00:03.714538
+Number nodes: 145
+0:00:04.390237
+Number nodes: 159
+0:00:02.442048
+Number nodes: 91
+0:00:01.345662
+Number nodes: 46
+0:00:01.932042
+Number nodes: 90
+0:00:00.718537
+Number nodes: 32
+0:00:00.886951
+Number nodes: 35
+0:00:00.697418
+Number nodes: 34
+0:00:01.305912
+Number nodes: 60
+0:00:01.011375
+Number nodes: 41
+0:00:02.378112
+Number nodes: 99
+0:00:00.412741
+Number nodes: 21
+0:00:00.469244
+Number nodes: 21
+0:00:01.771982
+Number nodes: 56
+0:00:00.842816
+Number nodes: 36
+0:00:01.796405
+Number nodes: 72
+0:00:02.950030
+Number nodes: 104
+0:00:00.677384
+Number nodes: 22
+0:00:02.378913
+Number nodes: 81
+0:00:05.201601
+Number nodes: 168
+0:00:02.234198
+Number nodes: 79
+0:00:03.336112
+Number nodes: 125
+0:00:01.810024
+Number nodes: 79
+0:00:00.808858
+Number nodes: 35
+0:00:00.724198
+Number nodes: 30
+0:00:01.063844
+Number nodes: 53
+0:00:02.097335
+Number nodes: 72
+0:00:01.285473
+Number nodes: 49
+0:00:00.432554
+Number nodes: 21
+0:00:01.992938
+Number nodes: 78
+0:00:02.046114
+Number nodes: 72
+0:00:01.940269
+Number nodes: 69
+0:00:04.535739
+Number nodes: 140
+####################
+Number of rounds: 50
+Number of successes: 50
+Success rate: 100.0%
+Average time per success: 1.8794199
+Average number nodes per success: 72.24

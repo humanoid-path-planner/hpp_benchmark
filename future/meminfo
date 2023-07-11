@@ -1,1 +1,4 @@
-cp /proc/meminfo .
+{
+  cp /proc/meminfo .
+  exit
+}

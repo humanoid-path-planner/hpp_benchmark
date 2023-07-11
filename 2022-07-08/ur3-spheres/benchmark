@@ -1,0 +1,104 @@
+0:00:03.803815
+Number nodes: 130
+0:00:26.920062
+Number nodes: 714
+Failed to plan path: hpp_idl.hpp.Error(msg='Maximal number of iterations reached: 5000')
+0:00:02.731345
+Number nodes: 77
+0:00:00.362353
+Number nodes: 16
+0:00:00.919066
+Number nodes: 40
+0:00:13.596701
+Number nodes: 404
+0:00:02.000534
+Number nodes: 77
+0:00:15.071454
+Number nodes: 415
+0:00:03.619487
+Number nodes: 102
+0:00:05.452677
+Number nodes: 180
+0:00:03.193206
+Number nodes: 116
+0:00:01.138911
+Number nodes: 39
+0:00:05.163263
+Number nodes: 162
+0:00:07.205004
+Number nodes: 222
+0:00:28.522425
+Number nodes: 779
+0:00:17.387863
+Number nodes: 474
+0:00:13.317100
+Number nodes: 371
+0:00:21.112044
+Number nodes: 606
+0:00:06.295293
+Number nodes: 224
+0:00:05.262256
+Number nodes: 140
+0:00:00.215236
+Number nodes: 16
+0:00:04.364509
+Number nodes: 130
+0:00:09.821970
+Number nodes: 292
+0:00:15.469821
+Number nodes: 350
+0:00:06.108002
+Number nodes: 175
+0:00:06.309041
+Number nodes: 176
+0:00:27.097857
+Number nodes: 682
+0:00:11.643610
+Number nodes: 321
+0:00:04.451743
+Number nodes: 142
+Failed to plan path: hpp_idl.hpp.Error(msg='Maximal number of iterations reached: 5000')
+0:00:06.974528
+Number nodes: 192
+0:00:24.017118
+Number nodes: 589
+0:00:02.405755
+Number nodes: 86
+0:00:11.316513
+Number nodes: 331
+0:00:04.363101
+Number nodes: 141
+0:00:00.747166
+Number nodes: 36
+0:00:18.955098
+Number nodes: 434
+0:00:24.673938
+Number nodes: 664
+0:00:01.432349
+Number nodes: 50
+0:00:17.567344
+Number nodes: 472
+0:00:02.482365
+Number nodes: 76
+0:00:01.127346
+Number nodes: 43
+0:00:40.953710
+Number nodes: 1032
+0:00:27.493851
+Number nodes: 797
+0:00:45.460264
+Number nodes: 1121
+0:00:02.035222
+Number nodes: 63
+0:00:02.336163
+Number nodes: 75
+0:00:11.878918
+Number nodes: 340
+0:00:05.797122
+Number nodes: 191
+####################
+Number of rounds: 50
+Number of successes: 48
+Success rate: 96.0%
+Average time per success: 10.845302479166667
+Average number nodes per success: 298.0208333333333
