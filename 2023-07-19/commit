@@ -11,7 +11,7 @@ hpp-environments: afeb1532c424959c642cf97707af9d17ab1e735a
 hpp-fcl: 2e1fd517e47d94aadbbdc2475e9b0c503e7a958c
 hpp-gepetto-viewer: 6384ad1a102d2f3c32f21b156635dae27b3a9fab
 hpp-gui: 2d9692d705a3bb6400db157c693280beda1d099e
-hpp-manipulation: 4303c92b7bcf84d3502c9c1e6e02ddef07ded154
+hpp-manipulation: 7e647d858c814a6601f73d46dd0e55747863484f
 hpp-manipulation-corba: 60f0a76a8ba229e307af1cd5670990217787033f
 hpp-manipulation-urdf: c5d0ddf7551394144005169bcf85727017cde8be
 hpp-pinocchio: 8235a488651bed07cffea9ac39168d27d8b91208

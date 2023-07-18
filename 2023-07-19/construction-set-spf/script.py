@@ -158,28 +158,43 @@ cg.initialize ()
 # Create a goal configuration with the construction set assembled.
 
 ps.selectPathPlanner('M-RRT')
+ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
+ps.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
+ps.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 ps.clearConfigValidations()
 
 cg.initialize()
 
 c = sqrt(2)/2
-ps.setMaxIterPathPlanning(100)
+ps.setMaxIterPathPlanning(5000)
 
+totalTime = dt.timedelta (0)
+totalNumberNodes = 0
+success = 0
 for i in range (args.N):
     ps.clearRoadmap ()
     ps.setInitialConfig (q0)
     ps.setGoalConstraints(['cylinder0/magnet0 grasps sphere0/magnet',
                            'cylinder0/magnet1 grasps sphere1/magnet',
                            'place_cylinder0'])
-    t1 = dt.datetime.now ()
-    ps.solve ()
-    t2 = dt.datetime.now ()
-    totalTime += t2 - t1
-    print (t2-t1)
-    n = ps.numberNodes ()
-    totalNumberNodes += n
-    print ("Number nodes: " + str(n))
+    try:
+      t1 = dt.datetime.now ()
+      ps.solve ()
+      t2 = dt.datetime.now ()
+    except Exception as e:
+      print (f"Failed to plan path: {e}")
+    else:
+      success += 1
+      totalTime += t2 - t1
+      print (t2-t1)
+      n = ps.numberNodes ()
+      totalNumberNodes += n
+      print ("Number nodes: " + str(n))
 if args.N != 0:
-  print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/float (args.N)))
-  print ("Average number nodes: " + str (totalNumberNodes/float(args.N)))
-
+    print ("#" * 20)
+    print (f"Number of rounds: {args.N}")
+    print (f"Number of successes: {success}")
+    print (f"Success rate: {success/ args.N * 100}%")
+    if success > 0:
+        print (f"Average time per success: {totalTime.total_seconds()/success}")
+        print (f"Average number nodes per success: {totalNumberNodes/success}")
