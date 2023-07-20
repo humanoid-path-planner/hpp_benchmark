@@ -1,9 +1,16 @@
 #/usr/bin/env python
 
+from argparse import ArgumentParser
 from hpp_ros import ScenePublisher, PathPlayer
 from hpp.corbaserver.hrp2 import Robot
 from hpp.corbaserver import ProblemSolver
 from hpp.corbaserver.wholebody_step.client import Client as WsClient
+
+# parse arguments {{{2
+parser = ArgumentParser()
+parser.add_argument('-N', default=20, type=int)
+args = parser.parse_args()
+# 2}}}
 
 Robot.urdfSuffix = '_capsule'
 Robot.srdfSuffix= '_capsule'
@@ -59,22 +66,33 @@ ps.selectPathOptimizer ("None")
 import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
-for i in range (20):
-    ps.client.problem.clearRoadmap ()
-    ps.resetGoalConfigs ()
-    ps.setInitialConfig (q1proj)
-    ps.addGoalConfig (q2proj)
+success = 0
+for i in range (args.N):
+  ps.client.problem.clearRoadmap ()
+  ps.resetGoalConfigs ()
+  ps.setInitialConfig (q1proj)
+  ps.addGoalConfig (q2proj)
+  try:
     t1 = dt.datetime.now ()
     ps.solve ()
     t2 = dt.datetime.now ()
+  except:
+    print ("Failed to plan path.")
+  else:
+    success += 1
     totalTime += t2 - t1
     print (t2-t1)
     n = len (ps.client.problem.nodes ())
     totalNumberNodes += n
     print ("Number nodes: " + str(n))
 
-print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/20.))
-print ("Average number nodes: " + str (totalNumberNodes/20.))
+if args.N != 0:
+  print (f"Number of rounds: {args.N}")
+  print (f"Number of successes: {success}")
+  print (f"Success rate: {success/ args.N * 100}%")
+  if success > 0:
+    print (f"Average time per success: {totalTime.total_seconds()/success}")
+    print (f"Average number nodes per success: {totalNumberNodes/success}")
 
 pp = PathPlayer (cl, r)
 pp (1)

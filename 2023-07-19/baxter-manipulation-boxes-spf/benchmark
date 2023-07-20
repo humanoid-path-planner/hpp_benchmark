@@ -1,0 +1,46 @@
+0:00:01.102232
+Number nodes: 196
+0:00:00.595448
+Number nodes: 52
+0:00:00.301659
+Number nodes: 27
+0:00:00.949553
+Number nodes: 66
+0:00:00.338677
+Number nodes: 16
+0:00:00.302951
+Number nodes: 15
+0:00:01.046390
+Number nodes: 181
+0:00:00.549385
+Number nodes: 90
+0:00:00.401991
+Number nodes: 55
+0:00:00.603503
+Number nodes: 80
+0:00:00.974408
+Number nodes: 61
+0:00:00.779714
+Number nodes: 112
+0:00:00.952654
+Number nodes: 157
+0:00:00.263319
+Number nodes: 20
+0:00:00.461542
+Number nodes: 30
+0:00:00.588865
+Number nodes: 29
+0:00:00.493031
+Number nodes: 63
+0:00:00.411547
+Number nodes: 41
+0:00:00.425569
+Number nodes: 42
+0:00:00.365871
+Number nodes: 36
+####################
+Number of rounds: 20
+Number of successes: 20
+Success rate: 100.0%
+Average time per success: 0.59541545
+Average number nodes per success: 68.45

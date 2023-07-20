@@ -1,0 +1,8 @@
+# assume folder structure src/hpp_benchmark/<date_of_benchmark>
+# and "src" contains all the relevant packages
+{
+  CURRENT_DIR=$PWD;
+  cd ../../;
+  (for folder in $(ls -d */ | sed s#/##); do  cd $folder; echo $folder:$(git rev-parse HEAD); cd ..; done) > $CURRENT_DIR/commit;
+  exit
+}
