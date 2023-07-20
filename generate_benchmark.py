@@ -25,7 +25,7 @@ def main():
         server_proc = Popen(["hppcorbaserver"])
         print(f"Executing {name}/script.py")
         with open(f"{name}/benchmark", "w") as log_file:
-            client_proc = Popen(['python3', f'{name}/script.py'],
+            client_proc = Popen([sys.executable, f'{name}/script.py'],
                                 stdout=log_file, stderr=log_file)
             client_proc.wait()
         server_proc.terminate()
