@@ -1,0 +1,4 @@
+{
+  cp /proc/cpuinfo .
+  exit
+}
