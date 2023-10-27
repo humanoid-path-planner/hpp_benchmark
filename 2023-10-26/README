@@ -1,0 +1,5 @@
+New set of benchmarks
+
+  - in the 2 baxter benchmarks, paths are optimized with various types of
+    optimizers.
+  - in construction-set, the hand-made algorithm has been reintroduced.

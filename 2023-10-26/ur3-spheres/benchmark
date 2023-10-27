@@ -1,0 +1,45 @@
+0:00:17.907089
+Number nodes: 480
+0:00:08.331148
+Number nodes: 253
+0:00:15.861117
+Number nodes: 484
+0:00:23.029313
+Number nodes: 615
+0:00:01.900503
+Number nodes: 79
+0:00:00.914525
+Number nodes: 38
+0:00:00.463833
+Number nodes: 24
+0:00:09.608951
+Number nodes: 291
+0:00:08.620366
+Number nodes: 241
+0:00:01.559184
+Number nodes: 51
+0:00:02.187868
+Number nodes: 71
+0:00:06.569188
+Number nodes: 221
+0:00:05.627361
+Number nodes: 209
+0:00:03.786140
+Number nodes: 131
+Failed to plan path: hpp_idl.hpp.Error(msg='Maximal number of iterations reached: 5000')
+0:00:00.494118
+Number nodes: 23
+0:00:02.131613
+Number nodes: 75
+0:00:31.542718
+Number nodes: 891
+0:00:15.198077
+Number nodes: 460
+0:00:02.712926
+Number nodes: 101
+####################
+Number of rounds: 20
+Number of successes: 19
+Success rate: 95.0%
+Average time per success: 8.339265157894737
+Average number nodes per success: 249.3684210526316
