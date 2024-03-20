@@ -1,7 +1,7 @@
 from math import pi
 from hpp.corbaserver.manipulation import Client, ConstraintGraph, \
   Constraints, ProblemSolver
-from hpp.corbaserver.manipulation.ur5 import Robot
+from hpp.corbaserver.manipulation import Robot
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.gepetto import PathPlayer
 from hpp.corbaserver import loadServerPlugin
@@ -40,7 +40,7 @@ class Ground (object):
   urdfSuffix = ""
   srdfSuffix = ""
 
-robot = Robot ('2ur5-sphere', 'r0')
+robot = Robot ('2ur5-sphere', 'r0', rootJointType="anchor")
 robot.setJointPosition ('r0/root_joint', [-.25, 0, 0, 0, 0, 0, 1])
 
 ps = ProblemSolver (robot)
