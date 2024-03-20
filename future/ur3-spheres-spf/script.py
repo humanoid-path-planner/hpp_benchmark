@@ -12,7 +12,7 @@ from argparse import ArgumentParser
 from math import pi, fabs
 from hpp.corbaserver.manipulation import Client, ConstraintGraph, Rule, \
     ConstraintGraphFactory, ProblemSolver, Constraints
-from hpp.corbaserver.manipulation.ur5 import Robot
+from hpp.corbaserver.manipulation import Robot
 from hpp.gepetto.manipulation import ViewerFactory
 from hpp.corbaserver import loadServerPlugin
 from hpp_idl.hpp import Equality, EqualToZero
@@ -40,7 +40,7 @@ class Ground (object):
   urdfSuffix = ""
   srdfSuffix = ""
 nSphere = 2
-robot = Robot ('ur3-spheres', 'ur3')
+robot = Robot ('ur3-spheres', 'ur3', rootJointType="anchor")
 ps = ProblemSolver (robot)
 ps.setErrorThreshold (1e-4)
 ps.setMaxIterProjection (40)
@@ -156,6 +156,7 @@ ps.selectPathPlanner("StatesPathFinder")
 ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
 ps.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
 ps.setParameter("StatesPathFinder/nTriesUntilBacktrack",3)
+
 # Run benchmark
 #
 import datetime as dt
