@@ -21,28 +21,27 @@ def parseDirectories(directory:str, bench:str) -> T.Tuple[T.List[str], T.Dict[st
         values: dictionary mapping subdirectory name to a dictionary
           of (statistics, value)
     """
-    def valid (dir):
-        base = join(directory, dir)
-        if not isdir(base): return False
-        bdir = join(base, bench)
-        if not isdir(bdir): return False
-        return isfile(join(bdir, benchmark_file))
-
     keys = []
     values = dict()
 
-    for dir in filter (valid, listdir(directory)):
-        file = join (directory, dir, bench, benchmark_file)
-        if not isfile(file):
-            print(file + " does not exist", file=sys.stderr)
-            continue
-        values[dir] = dict()
-        with open (file, 'r') as f:
-            for line in f.readlines():
-                if line.startswith("Average "):
-                    k, v = line[len("Average "):].strip().split(':', 1)
-                    if k not in keys: keys.append(k)
-                    values[dir][k] = float(v)
+    years = list(filter(lambda s:s.isdigit(), listdir(directory)))
+    for y in years:
+        days = list(filter(lambda s:s[0:2].isdigit() and s[2]=='-' and s[3:].isdigit(),
+                           listdir(join(directory, y))))
+        for d in days:
+            print (f"year={y}, day={d}")
+            file = join(directory, y, d, bench, benchmark_file)
+            dir = y + "/" + d
+            if not isfile(file):
+                print(file + " does not exist", file=sys.stderr)
+                continue
+            values[dir] = dict()
+            with open (file, 'r') as f:
+                for line in f.readlines():
+                    if line.startswith("Average "):
+                        k, v = line[len("Average "):].strip().split(':', 1)
+                        if k not in keys: keys.append(k)
+                        values[dir][k] = float(v)
     return keys, values
 
 def generateCSV(keys: T.List[str], values: T.Dict[str, T.Dict[str, float]], csvfile: str, sep: str = ';', nan: str = 'nan'):
