@@ -1,0 +1,27 @@
+eigenpy: 458c0e195253568a20b4ed1342cd4df28e2373a2
+example-robot-data: ref: refs/heads/devel
+gepetto-viewer: 65111788f7001d69b8946fa7ad528b7a860c29a7
+gepetto-viewer-corba: 97875bc71f0f5eec49a6b2c6dcd4669af8d9ef9a
+hpp-baxter: 83d19878227b801b5361476e43ab49143992084f
+hpp-constraints: 8f5cb00d7465949d0d7a30297d66e7bd44a56513
+hpp-corbaserver: ccc322972063946c8cefe7debf58699415a18f81
+hpp-core: 8ec47195e53897502bccf87742697e7125c44095
+hpp-doc: 53d65c0b8d656189e065eb3d0442b886b8ec8403
+hpp-environments: a51c94ec17a4e1cbeb44a27907fb4ac022eb3eaa
+hpp-fcl: 1c6f0a1d9c8d47914ab2196845327b3836de4b32
+hpp-gepetto-viewer: a22f3b792417da288c77de55fa50a52ff4392b91
+hpp-gui: 272a527b51d39f51447296fd40b7311561713290
+hpp-manipulation: 8234126edd34702e0221c3a69bd5403231b528ff
+hpp-manipulation-corba: f72e634e1ac1b26a03ba20b154bb324f98c174db
+hpp-manipulation-urdf: 777c4985bee84716ce2a3903b57938d6ea34ccec
+hpp-pinocchio: 4b6c47ad0399c75dc0a5e2a70e1f5c592f3a7587
+hpp-plot: 1829202b93b1b45e2f09e62aee1105e801f537d7
+hpp-python: 417dfcfc3ff955621d08081ea4dcc8d1c06a1b54
+hpp-statistics: 793dc87e46521af7e186ad2591719c7e33f6d2b8
+hpp-template-corba: ce9201ac96f9157a725a96e6057806f2727dcf7c
+hpp-util: 781097b3bbc57977786ec18fa6e40d28b4ab3454
+hpp_benchmark: 535b94e96fe6c54a7bdf333c613f424679bc35cc
+hpp_romeo: 009288b9aa86bb9438569e47ee91e2765e5b6f9c
+hpp_tutorial: ref: refs/heads/devel
+pinocchio: 0caf0ca4d07e63834cdc420c703993662c59e01b
+qgv: bbe251197d063d69202ac372f5b0da8ccbb76f53

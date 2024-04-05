@@ -41,7 +41,7 @@ class Ground (object):
   urdfSuffix = ""
   srdfSuffix = ""
 
-robot = Robot ('2ur5-sphere', 'r0', rootJointType=Robot.rootJointType)
+robot = Robot ('2ur5-sphere', 'r0', rootJointType = Robot.rootJointType)
 robot.setJointPosition ('r0/root_joint', [-.25, 0, 0, 0, 0, 0, 1])
 
 ps = ProblemSolver (robot)
