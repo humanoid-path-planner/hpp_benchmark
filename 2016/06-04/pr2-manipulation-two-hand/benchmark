@@ -38,5 +38,5 @@ Number nodes: 87
 Number nodes: 84
 0:00:45.060734
 Number nodes: 43
-Average time: 83.9586716
-Average number nodes: 120.95
+Average time per success: 83.9586716
+Average number nodes per success: 120.95

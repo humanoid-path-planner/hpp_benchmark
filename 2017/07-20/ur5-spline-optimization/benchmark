@@ -65,4 +65,4 @@ Optim: 0:00:00.664125
 Number nodes: 73
 Average solve time: 0.0545405
 Average optim time: 0.4813757
-Average number nodes: 48.2
+Average number nodes per success: 48.2

@@ -39,8 +39,8 @@ Number nodes: 158
 0:00:04.803683
 Number nodes: 49
 Number of successes: 20
-Average time: 14.27721725
-Average number nodes: 97.6
+Average time per success: 14.27721725
+Average number nodes per success: 97.6
 
 ---Path 0---
 There is a collision:

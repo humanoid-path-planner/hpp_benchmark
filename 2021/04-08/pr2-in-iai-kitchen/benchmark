@@ -38,6 +38,6 @@ Number nodes: 118
 Number nodes: 24
 0:00:04.731387
 Number nodes: 79
-Average time: 5.75848995
-Average number nodes: 89.0
+Average time per success: 5.75848995
+Average number nodes per success: 89.0
 >>> v=vf.createViewer()
