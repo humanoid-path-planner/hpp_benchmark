@@ -11,6 +11,7 @@ Client ().problem.resetProblem ()
 
 Robot.urdfFilename = "package://example-robot-data/robots/ur_description/urdf/ur3_gripper.urdf"
 Robot.srdfFilename = "package://example-robot-data/robots/ur_description/srdf/ur3_gripper.srdf"
+Robot.rootJointType = "anchor"
 
 class Cylinder_08 (object):
   rootJointType = 'freeflyer'
@@ -40,7 +41,7 @@ class Ground (object):
   urdfSuffix = ""
   srdfSuffix = ""
 
-robot = Robot ('2ur5-sphere', 'r0', rootJointType="anchor")
+robot = Robot ('2ur5-sphere', 'r0', rootJointType=Robot.rootJointType)
 robot.setJointPosition ('r0/root_joint', [-.25, 0, 0, 0, 0, 0, 1])
 
 ps = ProblemSolver (robot)
