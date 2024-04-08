@@ -38,8 +38,8 @@ Number nodes: 173
 Number nodes: 217
 0:00:40.425164
 Number nodes: 920
-Average time: 15.086284699999998
-Average number nodes: 319.85
+Average time per success: 15.086284699999998
+Average number nodes per success: 319.85
 
 Testing the collision with the table:
 	Ok. The collision was detected.

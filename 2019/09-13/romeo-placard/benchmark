@@ -38,8 +38,8 @@ Number nodes: 61
 Number nodes: 46
 0:00:03.783015
 Number nodes: 36
-Average time: 40.73769635
-Average number nodes: 301.3
+Average time per success: 40.73769635
+Average number nodes per success: 301.3
 Average success rate for implicit both hands: 0.1154
 Average time for implicit both hands: 0.0073212692976
 Average success rate for implicit right hand: 0.4103
