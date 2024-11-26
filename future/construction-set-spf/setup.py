@@ -42,7 +42,7 @@ class Ground (object):
   srdfSuffix = ""
 
 robot = Robot ('2ur5-sphere', 'r0', rootJointType=Robot.rootJointType)
-robot.setJointPosition ('r0/root_joint', [-.25, 0, 0, 0, 0, 0, 1])
+robot.setJointPosition ('r0/world_joint', [-.25, 0, 0, 0, 0, 0, 1])
 
 ps = ProblemSolver (robot)
 ps.setErrorThreshold (1e-4)
@@ -57,7 +57,7 @@ vf = ViewerFactory (ps)
 #    - 4 short cylinders,
 
 vf.loadRobotModel (Robot, "r1")
-robot.setJointPosition ('r1/root_joint', [.25, 0, 0, 0, 0, 1, 0])
+robot.setJointPosition ('r1/world_joint', [.25, 0, 0, 0, 0, 1, 0])
 
 # Change bounds of robots to increase workspace and avoid some collisions
 robot.setJointBounds ('r0/shoulder_pan_joint', [-pi, 4])
