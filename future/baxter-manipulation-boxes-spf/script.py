@@ -6,7 +6,7 @@
 
 from argparse import ArgumentParser
 
-from hpp.corbaserver.manipulation.baxter import Robot
+from hpp.corbaserver.manipulation import Robot
 from hpp.corbaserver.manipulation import ProblemSolver, ConstraintGraph, \
     ConstraintGraphFactory, Constraints, Rule, Client
 from hpp.gepetto.manipulation import ViewerFactory
@@ -21,6 +21,10 @@ parser.add_argument('-N', default=20, type=int)
 parser.add_argument('--display', action='store_true')
 parser.add_argument('--run', action='store_true')
 args = parser.parse_args()
+
+Robot.urdfFilename = "package://example-robot-data/robots/baxter_description/urdf/baxter.urdf"
+Robot.srdfFilename = "package://example-robot-data/robots/baxter_description/srdf/baxter_manipulation.srdf"
+
 # nbBoxes
 K = 2
 nBoxPerLine = 2
@@ -34,21 +38,17 @@ goal = [1, 0]
 class Table (object):
   rootJointType = "anchor"
   packageName = 'hpp_tutorial'
-  urdfName = 'table'
-  urdfSuffix = ""
-  srdfSuffix = ""
+  urdfFilename = "package://hpp_tutorial/urdf/table.urdf"
+  srdfFilename = "package://hpp_tutorial/srdf/table.srdf"
+
 class Box (object):
   rootJointType = "freeflyer"
-  packageName = 'hpp-baxter'
-  meshPackageName = 'hpp-baxter'
-  urdfName = 'box'
-  urdfSuffix = ""
-  srdfSuffix = ""
+  urdfFilename = "package://hpp_environments/urdf/baxter_benchmark/box.urdf"
+  srdfFilename = "package://hpp_environments/srdf/baxter_benchmark/box.srdf"
   joint = "base_joint"
   handle = "handle"
 # 4}}}
-Robot.urdfSuffix = ""
-robot = Robot ('baxter-manip', 'baxter')
+robot = Robot ('baxter-manip', 'baxter', rootJointType="anchor")
 ps = ProblemSolver (robot)
 vf = ViewerFactory (ps)
 #robot.setRootJointPosition ("baxter" , [-3.2,-3.9, 0.926, 1, 0, 0, 0])
@@ -158,7 +158,6 @@ import datetime as dt
 totalTime = dt.timedelta (0)
 totalNumberNodes = 0
 success = 0
-
 # Remove joint bound validation
 ps.hppcorba.problem.clearConfigValidations()
 ps.addConfigValidation("CollisionValidation")
