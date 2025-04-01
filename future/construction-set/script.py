@@ -65,7 +65,7 @@ def getTransitionConnectingStates (graph, s1, s2):
       - s1, s2: states of the constraint graph
     '''
     # Filter out waypoint and levelset edges from the constraint graph
-  p = re.compile ('\|.*_.*')
+  p = re.compile ('\\|.*_.*')
   _edges = set (filter (lambda s : p.search (s) is None, graph.edges.keys ()))
   for edge in _edges:
     node1, node2 = cg.getNodesConnectedByEdge (edge)
@@ -89,7 +89,7 @@ def getEdges (graph, nodes, exploreNodes):
   edges = list ()
   loops = list ()
   # Filter out waypoint and levelset edges from the constraint graph
-  p = re.compile ('\|.*_.*')
+  p = re.compile ('\\|.*_.*')
   _edges = set (filter (lambda s : p.search (s) is None, graph.edges.keys ()))
   for n1, n2, n3 in zip (nodes, nodes [1:], exploreNodes):
     edgeFound = False
