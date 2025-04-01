@@ -1,0 +1,58 @@
+0:05:29.062215
+Number nodes: 2337
+0:00:17.809701
+Number nodes: 133
+0:01:04.831360
+Number nodes: 314
+0:02:34.872730
+Number nodes: 1036
+0:03:40.046835
+Number nodes: 1463
+0:03:16.226158
+Number nodes: 1379
+0:00:09.455867
+Number nodes: 81
+0:01:01.524802
+Number nodes: 455
+0:01:43.357691
+Number nodes: 594
+0:00:37.963548
+Number nodes: 325
+0:01:03.304942
+Number nodes: 493
+0:06:07.196837
+Number nodes: 2497
+0:00:51.681493
+Number nodes: 236
+0:00:11.699077
+Number nodes: 95
+0:02:21.452225
+Number nodes: 902
+0:00:11.702940
+Number nodes: 58
+0:00:15.581069
+Number nodes: 101
+0:00:23.496362
+Number nodes: 135
+0:02:11.431023
+Number nodes: 919
+0:01:59.749455
+Number nodes: 866
+####################
+Number of rounds: 20
+Number of successes: 20
+Success rate: 100.0%
+Average time per success: 106.62231650000001
+Average number nodes per success: 720.95
+Average success rate for implicit right hand: 0.0961
+Average time for implicit right hand: 0.0049381740093231204
+Average success rate for implicit both hands: 0.05
+Average time for implicit both hands: 0.007024937319755554
+Average success rate for implicit left hand: 0.0937
+Average time for implicit left hand: 0.004874149537086487
+Average success rate for explicit right hand: 0.1599
+Average time for explicit right hand: 0.0034102798461914064
+Average success rate for explicit both hands: 0.2634
+Average time for explicit both hands: 0.004478399658203125
+Average success rate for explicit left hand: 0.1599
+Average time for explicit left hand: 0.0032296241998672486
