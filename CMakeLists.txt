@@ -17,33 +17,52 @@
 # hpp_benchmark  If not, see
 # <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.22)
 
 SET(PROJECT_NAME hpp_benchmark)
 SET(PROJECT_DESCRIPTION "Benchmarks for humanoid path planner platform.")
 SET(INSTALL_DOCUMENTATION OFF)
 
+# Check if the submodule cmake have been initialized
+set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
+if(EXISTS "${JRL_CMAKE_MODULES}/base.cmake")
+  message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
+else()
+  find_package(jrl-cmakemodules QUIET CONFIG)
+  if(jrl-cmakemodules_FOUND)
+    get_property(
+      JRL_CMAKE_MODULES
+      TARGET jrl-cmakemodules::jrl-cmakemodules
+      PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+    message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
+  else()
+    message(STATUS "JRL cmakemodules not found. Let's fetch it.")
+    include(FetchContent)
+    FetchContent_Declare(
+      "jrl-cmakemodules"
+      GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git")
+    FetchContent_MakeAvailable("jrl-cmakemodules")
+    FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
+  endif()
+endif()
+
 SET(CXX_DISABLE_WERROR TRUE)
-INCLUDE(cmake/hpp.cmake)
-INCLUDE(cmake/python.cmake)
+INCLUDE("${JRL_CMAKE_MODULES}/hpp.cmake")
+INCLUDE("${JRL_CMAKE_MODULES}/python.cmake")
 
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 FINDPYTHON()
 
-ADD_PROJECT_DEPENDENCY(hpp-core 4)
-ADD_PROJECT_DEPENDENCY(hpp-corbaserver 4 REQUIRED)
-ADD_PROJECT_DEPENDENCY(hpp-gepetto-viewer 4 REQUIRED)
-ADD_PROJECT_DEPENDENCY(hpp-manipulation-urdf 4 REQUIRED)
+ADD_PROJECT_DEPENDENCY(hpp-core)
+ADD_PROJECT_DEPENDENCY(hpp-corbaserver REQUIRED)
+ADD_PROJECT_DEPENDENCY(hpp-gepetto-viewer REQUIRED)
+ADD_PROJECT_DEPENDENCY(hpp-manipulation-urdf REQUIRED)
 
 SET(CATKIN_PACKAGE_SHARE_DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
-install(FILES
-  package.xml
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  )
 install(FILES
   urdf/lydia.urdf
   urdf/obstacle.urdf
