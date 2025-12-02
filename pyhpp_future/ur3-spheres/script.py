@@ -80,7 +80,7 @@ for i in range(nSphere):
 urdf.loadModel(
     robot,
     0,
-    "kitchen_area",
+    "ground",
     "anchor",
     ground_urdf,
     ground_srdf,
