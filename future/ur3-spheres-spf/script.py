@@ -4,188 +4,329 @@
 #
 #  Author: Florent Lamiraux
 #
-# Start hppcorbaserver before running this script
-#
 
-import os
+from math import pi
+import numpy as np
+import datetime as dt
 from argparse import ArgumentParser
-from math import pi, fabs
-from hpp.corbaserver.manipulation import Client, ConstraintGraph, Rule, \
-    ConstraintGraphFactory, ProblemSolver, Constraints
-from hpp.corbaserver.manipulation import Robot
-from hpp.gepetto.manipulation import ViewerFactory
-from hpp.corbaserver import loadServerPlugin
-from hpp_idl.hpp import Equality, EqualToZero
+
+from pyhpp.manipulation.constraint_graph_factory import ConstraintGraphFactory
+from pyhpp.manipulation import (
+    Device,
+    Graph,
+    Problem,
+    ProgressiveProjector,
+    urdf,
+    StatesPathFinder,
+)
+from pyhpp.core import Dichotomy, Straight
+
+from pyhpp.constraints import (
+    Transformation,
+    ComparisonTypes,
+    ComparisonType,
+    Implicit,
+    LockedJoint,
+)
+from pinocchio import SE3, Quaternion
 
 parser = ArgumentParser()
-parser.add_argument('-N', default=20, type=int)
+parser.add_argument("-N", default=20, type=int)
 args = parser.parse_args()
-loadServerPlugin ("corbaserver", "manipulation-corba.so")
-Client ().problem.resetProblem ()
-Robot.urdfFilename = \
-    "package://example-robot-data/robots/ur_description/urdf/ur3_gripper.urdf"
-Robot.srdfFilename = \
-    "package://example-robot-data/robots/ur_description/srdf/ur3_gripper.srdf"
-dir = os.getenv('PWD')
-class Sphere (object):
-  rootJointType = 'freeflyer'
-  packageName = 'hpp_environments'
-  urdfName = 'construction_set/sphere'
-  urdfSuffix = ""
-  srdfSuffix = ""
-class Ground (object):
-  rootJointType = 'anchor'
-  packageName = 'hpp_environments'
-  urdfName = 'construction_set/ground'
-  urdfSuffix = ""
-  srdfSuffix = ""
-nSphere = 2
-robot = Robot ('ur3-spheres', 'ur3', rootJointType="anchor")
-ps = ProblemSolver (robot)
-ps.setErrorThreshold (1e-4)
-ps.setMaxIterProjection (40)
-vf = ViewerFactory (ps)
-# Change bounds of robots to increase workspace and avoid some collisions
-robot.setJointBounds ('ur3/shoulder_pan_joint', [-pi, 4])
-robot.setJointBounds ('ur3/shoulder_lift_joint', [-pi, 0])
-robot.setJointBounds ('ur3/elbow_joint', [-2.6, 2.6])
-vf.loadEnvironmentModel (Ground, 'ground')
-objects = list ()
-p = ps.client.basic.problem.getProblem()
-r = p.robot()
-for i in range (nSphere):
-  vf.loadObjectModel (Sphere, 'sphere{0}'.format (i))
-  robot.setJointBounds ('sphere{0}/root_joint'.format (i),
-                        [-1.,1.,-1.,1.,-.1,1.,-1.0001, 1.0001,-1.0001, 1.0001,
-                         -1.0001, 1.0001,-1.0001, 1.0001,])
-  objects.append ('sphere{0}'.format (i))
-## Gripper
-#
-grippers = ["ur3/gripper"]
-## Handles
-#
-handlesPerObject  = [['sphere{0}/handle'.format (i)] for i in range (nSphere)]
-contactsPerObject = [[] for i in range(nSphere)]
-## Contact surfaces
-shapesPerObject = [[] for o in objects]
-## Constraints
-#
-for i in range (nSphere):
-  # Change mask of sphere handle
-  o = objects[i]
-  h = r.getHandle(o + '/handle')
-  h.setMask([True,True,True,False,True,True])
-  # placement constraint
-  placementName = "place_sphere{0}".format (i)
-  ps.createTransformationConstraint (placementName, "",
-                                     "sphere{0}/root_joint".format (i),
-                                     [0, 0, 0.02, 0, 0, 0, 1],
-                                     [False, False, True, True, True, False])
-  ps.setConstantRightHandSide(placementName, True)
-  # placement complement constraint
-  ps.createTransformationConstraint (placementName + '/complement', "",
-                                     "sphere{0}/root_joint".format (i),
-                                     [0, 0, 0.02, 0, 0, 0, 1],
-                                     [True, True, False, False, False, True])
-  ps.setConstantRightHandSide(placementName + '/complement', False)
-  # combination of placement and complement
-  ps.createLockedJoint (placementName + '/hold',
-                        "sphere{0}/root_joint".format (i),
-                        [0, 0, 0.02, 0, 0, 0, 1],
-                        [Equality, Equality, EqualToZero,
-                         EqualToZero, EqualToZero, Equality])
-  ps.registerConstraints(placementName, placementName + '/complement',
-                         placementName + '/hold')
-  preplacementName = "preplace_sphere{0}".format (i)
-  ps.createTransformationConstraint (preplacementName, "",
-                                     "sphere{0}/root_joint".format (i),
-                                     [0, 0, 0.1, 0, 0, 0, 1],
-                                     [False, False, True, True, True, False])
-  ps.setConstantRightHandSide(preplacementName, True)
-q_init = [pi/6, -pi/2, pi/2, 0, 0, 0,
-          0.2, 0, 0.02, 0, 0, 0, 1,
-          0.3, 0, 0.02, 0, 0, 0, 1,]
-q_goal = [pi/6, -pi/2, pi/2, 0, 0, 0,
-          0.3, 0, 0.02, 0, 0, 0, 1,
-          0.2, 0, 0.02, 0, 0, 0, 1,]
-lang = 'py'
-if lang == 'cxx':
-  rules = [Rule(grippers, [''], True),
-           Rule(grippers, ['sphere0/handle'], True),
-           Rule(grippers, ['sphere1/handle'], True)]
-  cg = ConstraintGraph.buildGenericGraph (robot = robot, name = "manipulation",
-                                          grippers = grippers,
-                                          objects = objects,
-                                          handlesPerObjects = handlesPerObject,
-                                          shapesPerObjects = contactsPerObject,
-                                          envNames = [],
-                                          rules = rules)
-if lang == 'py':
-  cg = ConstraintGraph(robot,"manipulation")
-  factory = ConstraintGraphFactory(cg)
-  factory.setGrippers(grippers)
-  factory.setObjects(objects, handlesPerObject, contactsPerObject)
-  factory.generate()
 
+# Robot and environment file paths
+ur3_urdf = "package://example-robot-data/robots/ur_description/urdf/ur3_gripper.urdf"
+ur3_srdf = "package://example-robot-data/robots/ur_description/srdf/ur3_gripper.srdf"
+sphere_urdf = "package://hpp_environments/urdf/construction_set/sphere.urdf"
+sphere_srdf = "package://hpp_environments/srdf/construction_set/sphere.srdf"
+ground_urdf = "package://hpp_environments/urdf/construction_set/ground.urdf"
+ground_srdf = "package://hpp_environments/srdf/construction_set/ground.srdf"
+
+nSphere = 2
+
+robot = Device("ur3-spheres")
+
+# Load UR3 robot
+ur3_pose = SE3(rotation=np.identity(3), translation=np.array([0, 0, 0]))
+urdf.loadModel(robot, 0, "ur3", "anchor", ur3_urdf, ur3_srdf, ur3_pose)
+
+# Change bounds of robots to increase workspace and avoid some collisions
+robot.setJointBounds("ur3/shoulder_pan_joint", [-pi, 4])
+robot.setJointBounds("ur3/shoulder_lift_joint", [-pi, 0])
+robot.setJointBounds("ur3/elbow_joint", [-2.6, 2.6])
+
+# Load ground
+urdf.loadModel(
+    robot,
+    0,
+    "ground",
+    "anchor",
+    ground_urdf,
+    ground_srdf,
+    SE3(rotation=np.identity(3), translation=np.array([0, 0, 0])),
+)
+
+# Load spheres to be manipulated
+objects = list()
+sphere_pose = SE3(rotation=np.identity(3), translation=np.array([0, 0, 0]))
+for i in range(nSphere):
+    urdf.loadModel(
+        robot,
+        0,
+        "sphere{0}".format(i),
+        "freeflyer",
+        sphere_urdf,
+        sphere_srdf,
+        sphere_pose,
+    )
+    robot.setJointBounds(
+        "sphere{0}/root_joint".format(i),
+        [
+            -1.0,
+            1.0,
+            -1.0,
+            1.0,
+            -0.1,
+            1.0,
+            -1.0001,
+            1.0001,
+            -1.0001,
+            1.0001,
+            -1.0001,
+            1.0001,
+            -1.0001,
+            1.0001,
+        ],
+    )
+    objects.append("sphere{0}".format(i))
+
+model = robot.model()
+
+problem = Problem(robot)
+cg = Graph("manipulation", robot, problem)
+
+# Set error threshold and max iterations
+cg.errorThreshold(1e-4)
+cg.maxIterations(40)
+
+constraints = dict()
+
+## Grippers
+grippers = ["ur3/gripper"]
+
+## Handles
+handlesPerObject = [["sphere{0}/handle".format(i)] for i in range(nSphere)]
+contactsPerObject = [[] for i in range(nSphere)]
+
+## Constraints
+for i in range(nSphere):
+    o = objects[i]
+    h = robot.handles()[o + "/handle"]
+    h.mask = [True, True, True, False, True, True]
+
+    # placement constraint
+    placementName = "place_sphere{0}".format(i)
+    Id = SE3.Identity()
+    q = Quaternion(1, 0, 0, 0)
+    ballPlacement = SE3(q, np.array([0, 0, 0.02]))
+    joint = robot.model().getJointId("sphere{0}/root_joint".format(i))
+    pc = Transformation(
+        placementName,
+        robot,
+        joint,
+        Id,
+        ballPlacement,
+        [False, False, True, True, True, False],
+    )
+    cts = ComparisonTypes()
+    cts[:] = (
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+    )
+    implicit_mask = [True, True, True]
+    implicitPlacementConstraint = Implicit(pc, cts, implicit_mask)
+    constraints[placementName] = implicitPlacementConstraint
+
+    # placement complement constraint
+    pc = Transformation(
+        placementName + "/complement",
+        robot,
+        joint,
+        Id,
+        ballPlacement,
+        [True, True, False, False, False, True],
+    )
+    cts[:] = (
+        ComparisonType.Equality,
+        ComparisonType.Equality,
+        ComparisonType.Equality,
+    )
+    implicit_mask = [True, True, True]
+    implicitPlacementComplementConstraint = Implicit(pc, cts, implicit_mask)
+    constraints[placementName + "/complement"] = implicitPlacementComplementConstraint
+
+    # combination of placement and complement
+    cts[:] = (
+        ComparisonType.Equality,
+        ComparisonType.Equality,
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+        ComparisonType.Equality,
+    )
+    ll = LockedJoint(
+        robot,
+        "sphere{0}/root_joint".format(i),
+        np.array([0, 0, 0.02, 0, 0, 0, 1]),
+        cts,
+    )
+    constraints[placementName + "/hold"] = ll
+    cg.registerConstraints(
+        constraints[placementName],
+        constraints[placementName + "/complement"],
+        constraints[placementName + "/hold"],
+    )
+
+    # preplacement constraint
+    preplacementName = "preplace_sphere{0}".format(i)
+    Id = SE3.Identity()
+    q = Quaternion(1, 0, 0, 0)
+    ballPrePlacement = SE3(q, np.array([0, 0, 0.1]))
+    joint = robot.model().getJointId("sphere{0}/root_joint".format(i))
+    pc = Transformation(
+        preplacementName,
+        robot,
+        joint,
+        Id,
+        ballPrePlacement,
+        [False, False, True, True, True, False],
+    )
+    cts[:] = (
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+        ComparisonType.EqualToZero,
+    )
+    implicit_mask = [True, True, True]
+    implicitPrePlacementConstraint = Implicit(pc, cts, implicit_mask)
+    constraints[preplacementName] = implicitPrePlacementConstraint
+
+q_init = [
+    pi / 6,
+    -pi / 2,
+    pi / 2,
+    0,
+    0,
+    0,
+    0.2,
+    0,
+    0.02,
+    0,
+    0,
+    0,
+    1,
+    0.3,
+    0,
+    0.02,
+    0,
+    0,
+    0,
+    1,
+]
+q_goal = [
+    pi / 6,
+    -pi / 2,
+    pi / 2,
+    0,
+    0,
+    0,
+    0.3,
+    0,
+    0.02,
+    0,
+    0,
+    0,
+    1,
+    0.2,
+    0,
+    0.02,
+    0,
+    0,
+    0,
+    1,
+]
+
+factory = ConstraintGraphFactory(cg, constraints)
+
+factory.setGrippers(grippers)
+factory.setObjects(objects, handlesPerObject, contactsPerObject)
+factory.generate()
+
+# Uncomment to help M-RRT pathplanner
 # for e in ['ur3/gripper > sphere0/handle | f_ls',
 #           'ur3/gripper > sphere1/handle | f_ls'] :
-#  cg.setWeight(e, 100)
+#  cg.setWeight(cg.getTransition(e), 100)
 # for e in ['ur3/gripper < sphere0/handle | 0-0_ls',
 #           'ur3/gripper < sphere1/handle | 0-1_ls'] :
-#  cg.setWeight(e, 100)
-ps.selectPathValidation ("Dichotomy", 0)
+#  cg.setWeight(cg.getTransition(e), 100)
 
 for i in range(nSphere):
-  e = 'ur3/gripper > sphere{}/handle | f_23'.format(i)
-  cg.addConstraints(edge = e, constraints = Constraints(\
-    numConstraints=["place_sphere{}/complement".format(i),]))
-  e = 'ur3/gripper < sphere{}/handle | 0-{}_32'.format(i,i)
-  cg.addConstraints(edge = e, constraints = Constraints(\
-    numConstraints=["place_sphere{}/complement".format(i),]))
+    e = cg.getTransition("ur3/gripper > sphere{}/handle | f_23".format(i))
+    cg.addNumericalConstraintsToTransition(
+        e, [constraints["place_sphere{}/complement".format(i)]]
+    )
+    e = cg.getTransition("ur3/gripper < sphere{}/handle | 0-{}_32".format(i, i))
+    cg.addNumericalConstraintsToTransition(
+        e, [constraints["place_sphere{}/complement".format(i)]]
+    )
+
+problem.steeringMethod = Straight(problem)
+problem.pathValidation = Dichotomy(robot, 0)
 
 # need to set path projector due to implicit constraints added above
-ps.selectPathProjector ("Progressive", 0.01)
+problem.pathProjector = ProgressiveProjector(
+    problem.distance(), problem.steeringMethod, 0.01
+)
 
 cg.initialize()
 
-ps.setInitialConfig (q_init)
-ps.addGoalConfig (q_goal)
-ps.setMaxIterPathPlanning (5000)
-# Set parameters for States Path Finder
-ps.selectPathPlanner("StatesPathFinder")
-ps.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
-ps.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
-ps.setParameter("StatesPathFinder/nTriesUntilBacktrack",3)
+problem.initConfig(np.array(q_init))
+problem.addGoalConfig(np.array(q_goal))
+problem.constraintGraph(cg)
+
+planner = StatesPathFinder(problem)
+planner.maxIterations(5000)
+
+problem.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
+problem.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
+problem.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 
 # Run benchmark
 #
-import datetime as dt
-totalTime = dt.timedelta (0)
+totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
-for i in range (args.N):
-  ps.clearRoadmap ()
-  ps.resetGoalConfigs ()
-  ps.setInitialConfig (q_init)
-  ps.addGoalConfig (q_goal)
-  try:
-    t1 = dt.datetime.now ()
-    ps.solve ()
-    t2 = dt.datetime.now ()
-  except Exception as e:
-    print (f"Failed to plan path: {e}")
-  else:
-    success += 1
-    totalTime += t2 - t1
-    print (t2-t1)
-    n = ps.numberNodes ()
-    totalNumberNodes += n
-    print ("Number nodes: " + str(n))
+for i in range(args.N):
+    try:
+        planner.roadmap().clear()
+        t1 = dt.datetime.now()
+        planner.solve()
+        t2 = dt.datetime.now()
+    except Exception as e:
+        print(f"Failed to plan path: {e}")
+    else:
+        success += 1
+        totalTime += t2 - t1
+        print(t2 - t1)
+        n = len(planner.roadmap().nodes())
+        totalNumberNodes += n
+        print("Number nodes: " + str(n))
+
 if args.N != 0:
-  print ("#" * 20)
-  print (f"Number of rounds: {args.N}")
-  print (f"Number of successes: {success}")
-  print (f"Success rate: {success/ args.N * 100}%")
-  if success > 0:
-    print (f"Average time per success: {totalTime.total_seconds()/success}")
-    print (f"Average number nodes per success: {totalNumberNodes/success}")
+    print("#" * 20)
+    print(f"Number of rounds: {args.N}")
+    print(f"Number of successes: {success}")
+    print(f"Success rate: {success / args.N * 100}%")
+    if success > 0:
+        print(f"Average time per success: {totalTime.total_seconds() / success}")
+        print(f"Average number nodes per success: {totalNumberNodes / success}")
