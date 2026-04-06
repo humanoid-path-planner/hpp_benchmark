@@ -1,58 +1,55 @@
 #include "benchmark.hh"
 
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstring>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include <chrono>
+#include <cstring>
 #include <ctime>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
 #include <hpp/util/timer.hh>
+#include <iomanip>
+#include <iostream>
 
 typedef std::map<std::string, hpp::benchmark::BenchmarkBase*> Problems_t;
 Problems_t problems;
 
-void print_header(std::ostream& os, const std::string& status)
-{
+void print_header(std::ostream& os, const std::string& status) {
   int size = 10;
   int l = static_cast<int>(status.size());
   int before = (size - l) / 2;
-  int after  = size - l - before;
+  int after = size - l - before;
   os << '[';
   for (int i = 0; i < before; ++i) os << ' ';
   os << status;
-  for (int i = 0; i < after ; ++i) os << ' ';
+  for (int i = 0; i < after; ++i) os << ' ';
   os << ']' << ' ';
 }
 
 class NullStream : public std::ostream {
   class NullBuffer : public std::streambuf {
-    public:
-      int overflow( int c ) { return c; }
+   public:
+    int overflow(int c) { return c; }
   } m_nb;
-  public:
-  NullStream() : std::ostream( &m_nb ) {}
+
+ public:
+  NullStream() : std::ostream(&m_nb) {}
 };
 
-bool dirExists(const char* d)
-{
+bool dirExists(const char* d) {
   struct stat info;
 
-  if(stat(d, &info) != 0)
+  if (stat(d, &info) != 0)
     return false;
-  else if(!(info.st_mode & S_IFDIR))
+  else if (!(info.st_mode & S_IFDIR))
     return false;
   return true;
 }
 
 struct Output {
-  Output ()
-    : out_ (&std::cout)
-    , res_ (&nullStream_)
-  {
+  Output() : out_(&std::cout), res_(&nullStream_) {
     using std::chrono::system_clock;
     system_clock::time_point now = system_clock::now();
     std::time_t t_now = system_clock::to_time_t(now);
@@ -61,30 +58,19 @@ struct Output {
     today = oss.str();
   }
 
-  void print_header(const char* status)
-  {
-    ::print_header(o(), status);
-  }
+  void print_header(const char* status) { ::print_header(o(), status); }
 
-  void init_progress_bar (int N)
-  {
+  void init_progress_bar(int N) {
     for (int i = 0; i < N; ++i) o() << '.';
     for (int i = 0; i < N; ++i) o() << '\b';
     o() << std::flush;
   }
 
-  void pb_ok ()
-  {
-    o() << '|' << std::flush;
-  }
+  void pb_ok() { o() << '|' << std::flush; }
 
-  void pb_bad ()
-  {
-    o() << '-' << std::flush;
-  }
+  void pb_bad() { o() << '-' << std::flush; }
 
-  void setOutputDir(const char *dir)
-  {
+  void setOutputDir(const char* dir) {
     if (!dirExists(dir)) {
       std::cerr << "Directory does not exists: " << dir << std::endl;
       return;
@@ -92,8 +78,7 @@ struct Output {
     outputDir_ = dir;
   }
 
-  bool setupResultFileFromBenchmarkName(const std::string& benchName)
-  {
+  bool setupResultFileFromBenchmarkName(const std::string& benchName) {
     if (outputDir_.empty()) return false;
     std::string filename = outputDir_ + '/' + benchName + ".csv";
     if (resFile_.is_open()) resFile_.close();
@@ -103,10 +88,9 @@ struct Output {
   }
 
   bool setupResultFileFromBenchmarkSubcaseName(const std::string& benchName,
-      const std::string& caseName)
-  {
+                                               const std::string& caseName) {
     if (outputDir_.empty()) return false;
-    std::string dir (outputDir_ + '/' + benchName);
+    std::string dir(outputDir_ + '/' + benchName);
     if (!dirExists(dir.c_str())) {
       if (mkdir(dir.c_str(), 0777) != 0) {
         std::cerr << "Could not create directory " << dir << std::endl;
@@ -121,9 +105,8 @@ struct Output {
     return resFile_.good();
   }
 
-  void writeResult(const hpp::benchmark::results_t& results)
-  {
-    std::vector< std::vector<hpp::benchmark::value_type> > csvContent;
+  void writeResult(const hpp::benchmark::results_t& results) {
+    std::vector<std::vector<hpp::benchmark::value_type> > csvContent;
     bool first = true;
     r() << "Label";
     for (auto& result : results) {
@@ -136,17 +119,13 @@ struct Output {
     r() << '\n';
     for (const auto& line : csvContent) {
       r() << today;
-      for (auto v : line)
-        r() << "; " << v;
+      for (auto v : line) r() << "; " << v;
       r() << '\n';
     }
     closeResultFile();
   }
 
-  void closeResultFile()
-  {
-    resFile_.close();
-  }
+  void closeResultFile() { resFile_.close(); }
 
   std::ostream& o() { return *out_; };
   std::ostream& r() { return *res_; };
@@ -165,33 +144,30 @@ struct Output {
 namespace hpp {
 namespace benchmark {
 
-void registerBenchmark(BenchmarkBase* p, const std::string& name)
-{
+void registerBenchmark(BenchmarkBase* p, const std::string& name) {
   if (!problems.insert(std::make_pair(name, p)).second) {
     std::invalid_argument("Problem " + name + " already defined.");
     delete p;
   }
 }
 
-void stats (result_t values, value_type& mean, value_type& std_dev)
-{
+void stats(result_t values, value_type& mean, value_type& std_dev) {
   mean = 0;
   std_dev = 0;
   int n = 0;
   for (auto& v : values) {
     if (!isnan(v) && !isinf(v)) {
       mean += v;
-      std_dev += v*v;
+      std_dev += v * v;
       ++n;
     }
   }
   mean /= n;
   std_dev /= n;
-  std_dev = std::sqrt(std_dev - mean*mean);
+  std_dev = std::sqrt(std_dev - mean * mean);
 }
 
-void BenchmarkCase::run (int N, const std::string& name)
-{
+void BenchmarkCase::run(int N, const std::string& name) {
   debug::Timer timer;
 
   output.print_header("RUN");
@@ -206,10 +182,13 @@ void BenchmarkCase::run (int N, const std::string& name)
     timer.start();
     solveProblem();
     timer.stop();
-    results["Time (s)"].push_back(time_scale * static_cast<value_type>(timer.duration()));
+    results["Time (s)"].push_back(time_scale *
+                                  static_cast<value_type>(timer.duration()));
     saveResolutionResult(results);
-    if (validateSolution()) output.pb_ok();
-    else                    output.pb_bad();
+    if (validateSolution())
+      output.pb_ok();
+    else
+      output.pb_bad();
   }
 
   clean();
@@ -226,8 +205,7 @@ void BenchmarkCase::run (int N, const std::string& name)
   }
 }
 
-void BenchmarkNCase::run (int N, const std::string& name)
-{
+void BenchmarkNCase::run(int N, const std::string& name) {
   debug::Timer timer;
 
   output.print_header("SETUP");
@@ -235,7 +213,7 @@ void BenchmarkNCase::run (int N, const std::string& name)
   setup(N);
 
   output.o() << '\n';
-  std::vector<std::string> cases (names());
+  std::vector<std::string> cases(names());
   int iCase = 0;
   for (const std::string& ncase : cases) {
     output.print_header("RUN");
@@ -248,10 +226,13 @@ void BenchmarkNCase::run (int N, const std::string& name)
       timer.start();
       solveProblem();
       timer.stop();
-      results["Time (s)"].push_back(time_scale * static_cast<value_type>(timer.duration()));
+      results["Time (s)"].push_back(time_scale *
+                                    static_cast<value_type>(timer.duration()));
       saveResolutionResult(results);
-      if (validateSolution()) output.pb_ok();
-      else                    output.pb_bad();
+      if (validateSolution())
+        output.pb_ok();
+      else
+        output.pb_bad();
     }
     output.o() << std::endl;
 
@@ -274,32 +255,38 @@ void BenchmarkNCase::run (int N, const std::string& name)
 /** \brief Internal class used to run the benchmarks
  */
 class BenchmarkRunner {
-public:
-  static void run(int N, const std::string& name, hpp::benchmark::BenchmarkBase* problem)
-  {
+ public:
+  static void run(int N, const std::string& name,
+                  hpp::benchmark::BenchmarkBase* problem) {
     problem->run(N, name);
   }
 };
 /// \endcond
 
-} // namespace benchmark
-} // namespace hpp
+}  // namespace benchmark
+}  // namespace hpp
 
-void usage(const char* name)
-{
-  std::cout << name << '\n'
-    << " --help           show usage and exit\n"
-    << " --list           list benchmarks and exit\n"
-    << " --run <name>     run only one benchmark (instead of all by default). All options after this are ignored.\n"
-    << " --output <dir>   directory where to write the benchmark results. If not specified, result are saved.\n"
-    << " --label <label>  label (version, date...) indicating when the script was run (written in the result file).\n"
-    << " -N <integer>     set the number of repetition for a benchmark\n"
-    << std::flush;
+void usage(const char* name) {
+  std::cout
+      << name << '\n'
+      << " --help           show usage and exit\n"
+      << " --list           list benchmarks and exit\n"
+      << " --run <name>     run only one benchmark (instead of all by "
+         "default). All options after this are ignored.\n"
+      << " --output <dir>   directory where to write the benchmark results. If "
+         "not specified, result are saved.\n"
+      << " --label <label>  label (version, date...) indicating when the "
+         "script was run (written in the result file).\n"
+      << " -N <integer>     set the number of repetition for a benchmark\n"
+      << std::flush;
 }
 
-#define CHECK_REMAINING_ARGC(i,n,msg) if (i + n >= argc) { std::cerr << "Expected " << n << " argument(s) after " << msg << '\n'; return 1; }
-int main(int argc, char**argv)
-{
+#define CHECK_REMAINING_ARGC(i, n, msg)                                    \
+  if (i + n >= argc) {                                                     \
+    std::cerr << "Expected " << n << " argument(s) after " << msg << '\n'; \
+    return 1;                                                              \
+  }
+int main(int argc, char** argv) {
   using hpp::benchmark::BenchmarkRunner;
 
   int N = 20;
@@ -312,12 +299,11 @@ int main(int argc, char**argv)
       return 0;
     } else if (strcmp(argv[iarg], "--list") == 0) {
       std::cout << "Available benchmarks are:\n";
-      for (auto& pair : problems)
-        std::cout << pair.first << '\n';
+      for (auto& pair : problems) std::cout << pair.first << '\n';
       return 0;
     } else if (strcmp(argv[iarg], "--run") == 0) {
       CHECK_REMAINING_ARGC(iarg, 1, "--run");
-      std::string name (argv[++iarg]);
+      std::string name(argv[++iarg]);
       if (problems.count(name) == 0) {
         std::cerr << name << " not found.\n";
         return 1;
@@ -332,7 +318,7 @@ int main(int argc, char**argv)
       output.today = argv[++iarg];
     } else if (strcmp(argv[iarg], "-N") == 0) {
       CHECK_REMAINING_ARGC(iarg, 1, "-N");
-      N = (int)strtol(argv[++iarg],NULL,0);
+      N = (int)strtol(argv[++iarg], NULL, 0);
     }
   }
 
