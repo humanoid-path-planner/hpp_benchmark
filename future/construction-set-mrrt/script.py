@@ -388,6 +388,7 @@ manipulationPlanner.maxIterations(5000)
 totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
+solutions = list()
 for i in range(args.N):
     try:
         manipulationPlanner.roadmap().clear()
@@ -395,7 +396,8 @@ for i in range(args.N):
         problem.initConfig(q0)
         problem.addGoalConfig(q_goal)
         t1 = dt.datetime.now()
-        manipulationPlanner.solve()
+        path = manipulationPlanner.solve()
+        solutions.append(path)
         t2 = dt.datetime.now()
     except Exception as e:
         print(f"Failed to plan path: {e}")

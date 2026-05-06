@@ -72,7 +72,7 @@ for i in range(K):
     )
     robot.setJointBounds(
         boxes[i] + '/root_joint',
-        [-1, 0.5, -1, 2, 0.6, 1.9, -1, 1, -1, 1, -1, 1, -1, 1]
+        [-1, 1, -1, 2, 0.6, 1.9, -1, 1, -1, 1, -1, 1, -1, 1]
     )
 
 model = robot.model()
@@ -102,7 +102,7 @@ for i in range(K):
     iC = (i - iL) / nBoxPerLine
     x = bb[0] + xstep * iL
     y = bb[2] + xstep * iC
-    q_init[rankB[i]:rankB[i]+7] = [x, y, 0.746, 0, -c, 0, c]
+    q_init[rankB[i]:rankB[i]+7] = [x, y, 0.7451, 0, -c, 0, c]
 
 q_goal = q_init[::].copy()
 for i in range(K):
@@ -202,7 +202,6 @@ problem.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 
 problem.clearConfigValidations()
 problem.addConfigValidation("CollisionValidation")
-
 optimizers = {
     'GraphPartialShortcut': GraphPartialShortcut(problem),
     'GraphRandomShortcut': GraphRandomShortcut(problem),
@@ -217,13 +216,13 @@ iOpt = 0
 totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
+solutions = list()
 
 for i in range(args.N):
     currentOptimizer = optimizers[optimizerNames[iOpt]]
     iOpt += 1
     if iOpt == len(optimizerNames):
         iOpt = 0
-    
     try:
         planner.roadmap().clear()
         problem.resetGoalConfigs()
@@ -231,6 +230,7 @@ for i in range(args.N):
         t1 = dt.datetime.now()
         path = planner.solve()
         optimized_path = currentOptimizer.optimize(path)
+        solutions.append(optimized_path)
         t2 = dt.datetime.now()
     except Exception as e:
         print(f"Failed to plan path: {e}")
