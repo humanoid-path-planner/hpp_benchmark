@@ -56,7 +56,6 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
 FINDPYTHON()
 
 ADD_PROJECT_DEPENDENCY(hpp-core)
-ADD_PROJECT_DEPENDENCY(hpp-corbaserver REQUIRED)
 ADD_PROJECT_DEPENDENCY(hpp-gepetto-viewer REQUIRED)
 ADD_PROJECT_DEPENDENCY(hpp-manipulation-urdf REQUIRED)
 
@@ -81,11 +80,6 @@ install(FILES
   srdf/pr2-manipulation-kitchen/box.srdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf/pr2-manipulation-kitchen
   )
-install (FILES
-  src/hpp/corbaserver/lydia/robot.py
-  src/hpp/corbaserver/lydia/__init__.py
-  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/lydia)
-
 install(FILES
   future/baxter-manipulation-boxes/script.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/baxter-manipulation-boxes)
