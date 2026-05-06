@@ -78,7 +78,7 @@ install(FILES srdf/lydia.srdf
   )
 install(FILES
   srdf/pr2-manipulation-kitchen/box.srdf
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf/pr2-manipulation-kitchen
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/srdf/pr2-manipulation-kitchen
   )
 install(FILES
   future/baxter-manipulation-boxes/script.py
