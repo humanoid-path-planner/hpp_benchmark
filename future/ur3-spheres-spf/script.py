@@ -306,11 +306,13 @@ problem.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
+solutions = list()
 for i in range(args.N):
     try:
         planner.roadmap().clear()
         t1 = dt.datetime.now()
-        planner.solve()
+        path = planner.solve()
+        solutions.append(path)
         t2 = dt.datetime.now()
     except Exception as e:
         print(f"Failed to plan path: {e}")

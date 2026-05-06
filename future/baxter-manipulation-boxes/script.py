@@ -213,13 +213,13 @@ iOpt = 0
 totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
+solutions = list()
 
 for i in range(args.N):
     currentOptimizer = optimizers[optimizerNames[iOpt]]
     iOpt += 1
     if iOpt == len(optimizerNames):
         iOpt = 0
-    solutions = list()
     try:
         planner.roadmap().clear()
         problem.resetGoalConfigs()
