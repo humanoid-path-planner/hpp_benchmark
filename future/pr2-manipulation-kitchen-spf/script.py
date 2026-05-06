@@ -19,8 +19,8 @@ args = parser.parse_args()
 
 pr2_urdf = "package://example-robot-data/robots/pr2_description/urdf/pr2.urdf"
 pr2_srdf = "package://example-robot-data/robots/pr2_description/srdf/pr2_manipulation.srdf"
-box_urdf = "package://hpp_tutorial/urdf/box.urdf"
-box_srdf = "package://hpp_tutorial/srdf/box.srdf"
+box_urdf = "package://hpp_benchmark/urdf/pr2-manipulation-kitchen/box.urdf"
+box_srdf = "package://hpp_benchmark/srdf/pr2-manipulation-kitchen/box.srdf"
 kitchen_urdf = "package://hpp_tutorial/urdf/kitchen_area_obstacle.urdf"
 kitchen_srdf = "package://hpp_tutorial/srdf/kitchen_area.srdf"
 
