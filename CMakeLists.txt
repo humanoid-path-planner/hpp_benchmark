@@ -111,8 +111,6 @@ install(FILES
   future/romeo-placard/script.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/romeo-placard)
 
-ADD_SUBDIRECTORY(src)
-
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/images/cpp)
 if(false)
 add_custom_target(images
