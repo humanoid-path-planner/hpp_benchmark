@@ -70,8 +70,16 @@ install(FILES
   urdf/obstacle_easy.urdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
   )
+install(FILES
+  urdf/pr2-manipulation-kitchen/box.urdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf/pr2-manipulation-kitchen
+  )
 install(FILES srdf/lydia.srdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/srdf
+  )
+install(FILES
+  srdf/pr2-manipulation-kitchen/box.srdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf/pr2-manipulation-kitchen
   )
 install (FILES
   src/hpp/corbaserver/lydia/robot.py
