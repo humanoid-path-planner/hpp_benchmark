@@ -85,13 +85,6 @@ install(FILES
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/baxter-manipulation-boxes)
 
 install(FILES
-  future/construction-set/script.py
-  future/construction-set/setup.py
-  future/construction-set/state_name.py
-  future/construction-set/visibility_prm.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/construction-set)
-
-install(FILES
   future/pyrene-on-the-ground/script.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/pyrene-on-the-ground)
 
