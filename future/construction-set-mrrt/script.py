@@ -313,11 +313,11 @@ if not args.bigGraph:
     nodes.append(StateName(grasps))
     rules.append(makeRule(grasps=grasps))
     
-    problem.steeringMethod = Straight(problem)
-    problem.pathValidation = Progressive(robot, 0.02)
-    problem.pathProjector = ProgressiveProjector(
-        problem.distance(), problem.steeringMethod, 0.05
-    )
+    problem.steeringMethod(Straight(problem))
+    problem.pathValidation(Progressive(robot, 0.02))
+    problem.pathProjector(ProgressiveProjector(
+        problem.distance(), problem.steeringMethod(), 0.05
+    ))
     
     factory = ConstraintGraphFactory(cg, constraints)
     factory.setGrippers(grippers)
@@ -332,9 +332,9 @@ if not args.bigGraph:
     
     cg.initialize()
     
-    problem.pathProjector = ProgressiveProjector(
-        problem.distance(), problem.steeringMethod, 0.05
-    )
+    problem.pathProjector(ProgressiveProjector(
+        problem.distance(), problem.steeringMethod(), 0.05
+    ))
     
     nodes.append(nodes[-1])
 
@@ -348,11 +348,11 @@ else:
     
     rules.append(Rule(grippers=grippers, handles=[".*"] * len(grippers), link=True))
     
-    problem.steeringMethod = Straight(problem)
-    problem.pathValidation = Progressive(robot, 0.02)
-    problem.pathProjector = ProgressiveProjector(
-        problem.distance(), problem.steeringMethod, 0.05
-    )
+    problem.steeringMethod(Straight(problem))
+    problem.pathValidation(Progressive(robot, 0.02))
+    problem.pathProjector(ProgressiveProjector(
+        problem.distance(), problem.steeringMethod(), 0.05
+    ))
     
     factory = ConstraintGraphFactory(cg, constraints)
     factory.setGrippers(grippers)
@@ -367,9 +367,9 @@ else:
     
     cg.initialize()
     
-    problem.pathProjector = ProgressiveProjector(
-        problem.distance(), problem.steeringMethod, 0.05
-    )
+    problem.pathProjector(ProgressiveProjector(
+        problem.distance(), problem.steeringMethod(), 0.05
+    ))
 
 assert (nCylinder == 2 and nSphere == 2)
 c = sqrt(2) / 2

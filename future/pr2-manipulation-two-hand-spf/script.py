@@ -124,11 +124,11 @@ factory.generate()
 
 cg.addNumericalConstraintsToGraph([constraints[c] for c in lockAll])
 
-problem.steeringMethod = Straight(problem)
-problem.pathValidation = Dichotomy(robot, 0.0)
-problem.pathProjector = ProgressiveProjector(
-    problem.distance(), problem.steeringMethod, 0.2
-)
+problem.steeringMethod(Straight(problem))
+problem.pathValidation(Dichotomy(robot, 0.0))
+problem.pathProjector(ProgressiveProjector(
+    problem.distance(), problem.steeringMethod(), 0.2
+))
 
 cg.initialize()
 
