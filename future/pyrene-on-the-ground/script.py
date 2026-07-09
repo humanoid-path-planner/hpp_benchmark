@@ -133,11 +133,11 @@ problem.addNumericalConstraintsToConfigProjector(
     "balance-proj", list(constraints.values()), [0] * len(constraints)
 )
 # Set up path validation and projection
-problem.pathValidation = Dichotomy(robot, 0)
-problem.steeringMethod = Straight(problem)
-problem.pathProjector = ProgressiveProjector(
-    problem.distance(), problem.steeringMethod, 0.2
-)
+problem.pathValidation(Dichotomy(robot, 0))
+problem.steeringMethod(Straight(problem))
+problem.pathProjector(ProgressiveProjector(
+    problem.distance(), problem.steeringMethod(), 0.2
+))
 
 q1 = np.array(
     [

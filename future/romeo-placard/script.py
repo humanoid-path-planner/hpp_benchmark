@@ -7,7 +7,7 @@ import datetime as dt
 
 from pyhpp.manipulation.constraint_graph_factory import ConstraintGraphFactory, Rule
 from pyhpp.manipulation import Device, Graph, Problem, urdf, ManipulationPlanner
-from pyhpp.core import Dichotomy, Straight, ProgressiveProjector
+from pyhpp.core import Straight, ProgressiveProjector
 from pyhpp.constraints import Transformation, LockedJoint
 from pyhpp.core.static_stability_constraint_factory import (
     StaticStabilityConstraintsFactory,
@@ -175,11 +175,10 @@ res, q_goal_proj, err = cg.applyStateConstraints(state, q_goal)
 if not res:
     raise RuntimeError("Failed to project goal configuration.")
 
-problem.steeringMethod = Straight(problem)
-problem.pathValidation = Dichotomy(robot, 0)
-problem.pathProjector = ProgressiveProjector(
-    problem.distance(), problem.steeringMethod, 0.05
-)
+problem.steeringMethod(Straight(problem))
+problem.pathProjector(ProgressiveProjector(
+    problem.distance(), problem.steeringMethod(), 0.05
+))
 
 problem.initConfig(q_init_proj)
 problem.addGoalConfig(q_goal_proj)
@@ -219,5 +218,4 @@ if args.N != 0:
     if success > 0:
         print(f"Average time per success: {totalTime.total_seconds() / success}")
         print(f"Average number nodes per success: {totalNumberNodes / success}")
-
 

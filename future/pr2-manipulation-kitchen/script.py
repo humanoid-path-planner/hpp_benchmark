@@ -105,8 +105,8 @@ cg.addNumericalConstraintsToGraph([constraints[c] for c in locklhand])
 cg.setWeight(cg.getTransition('Loop | f'), 1)
 cg.setWeight(cg.getTransition('Loop | 0-0'), 1)
 
-problem.steeringMethod = Straight(problem)
-problem.pathValidation = Dichotomy(robot, 0.0)
+problem.steeringMethod(Straight(problem))
+problem.pathValidation(Dichotomy(robot, 0.0))
 
 cg.initialize()
 

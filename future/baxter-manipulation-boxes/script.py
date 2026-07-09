@@ -88,7 +88,7 @@ cg = Graph("graph", robot, problem)
 # Set error threshold and max iterations
 cg.errorThreshold(1e-3)
 cg.maxIterations(40)
-problem.pathValidation = Dichotomy(robot, 0.0)
+problem.pathValidation(Dichotomy(robot, 0.0))
 
 q_init = robot.currentConfiguration()
 
