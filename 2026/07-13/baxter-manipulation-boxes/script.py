@@ -5,8 +5,9 @@ from math import sqrt
 import numpy as np
 import datetime as dt
 
+from pyhpp.core import Dichotomy
 from pyhpp.manipulation.constraint_graph_factory import ConstraintGraphFactory, Rule
-from pyhpp.manipulation import Device, Graph, Problem, urdf, StatesPathFinder
+from pyhpp.manipulation import Device, Graph, Problem, urdf, ManipulationPlanner
 
 from pyhpp.manipulation import (
     RandomShortcut as ManipRandomShortcut,
@@ -75,6 +76,10 @@ for i in range(K):
         [-1, 1, -1, 2, 0.6, 1.9, -1, 1, -1, 1, -1, 1, -1, 1]
     )
 
+tmp = boxes[0]
+boxes[0] = boxes[1]
+boxes[1] = tmp
+
 model = robot.model()
 
 problem = Problem(robot)
@@ -83,6 +88,7 @@ cg = Graph("graph", robot, problem)
 # Set error threshold and max iterations
 cg.errorThreshold(1e-3)
 cg.maxIterations(40)
+problem.pathValidation(Dichotomy(robot, 0.0))
 
 q_init = robot.currentConfiguration()
 
@@ -189,13 +195,7 @@ problem.initConfig(q_init_proj)
 problem.addGoalConfig(q_goal_proj)
 problem.constraintGraph(cg)
 
-
-planner = StatesPathFinder(problem)
-planner.maxIterations(5000)
-
-problem.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
-problem.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
-problem.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
+planner = ManipulationPlanner(problem)
 
 problem.clearConfigValidations()
 problem.addConfigValidation("CollisionValidation")

@@ -1,6 +1,14 @@
+#!/usr/bin/env python
+#
+#  Copyright 2020 CNRS
+#
+#  Author: Florent Lamiraux
+#
+
 from math import pi
 import numpy as np
 import datetime as dt
+from argparse import ArgumentParser
 
 from pyhpp.manipulation.constraint_graph_factory import ConstraintGraphFactory
 from pyhpp.manipulation import (
@@ -9,7 +17,7 @@ from pyhpp.manipulation import (
     Problem,
     ProgressiveProjector,
     urdf,
-    ManipulationPlanner,
+    StatesPathFinder,
 )
 from pyhpp.core import Dichotomy, Straight
 
@@ -22,12 +30,10 @@ from pyhpp.constraints import (
 )
 from pinocchio import SE3, Quaternion
 
-# based on /hpp_benchmark/2025/04-01/ur3-spheres/script.py
-from argparse import ArgumentParser
-
 parser = ArgumentParser()
 parser.add_argument("-N", default=20, type=int)
 args = parser.parse_args()
+
 # Robot and environment file paths
 ur3_urdf = "package://example-robot-data/robots/ur_description/urdf/ur3_gripper.urdf"
 ur3_srdf = "package://example-robot-data/robots/ur_description/srdf/ur3_gripper.srdf"
@@ -36,15 +42,32 @@ sphere_srdf = "package://hpp_environments/srdf/construction_set/sphere.srdf"
 ground_urdf = "package://hpp_environments/urdf/construction_set/ground.urdf"
 ground_srdf = "package://hpp_environments/srdf/construction_set/ground.srdf"
 
+nSphere = 2
+
 robot = Device("ur3-spheres")
 
 # Load UR3 robot
 ur3_pose = SE3(rotation=np.identity(3), translation=np.array([0, 0, 0]))
 urdf.loadModel(robot, 0, "ur3", "anchor", ur3_urdf, ur3_srdf, ur3_pose)
 
-# Load sphere to be manipulated
+# Change bounds of robots to increase workspace and avoid some collisions
+robot.setJointBounds("ur3/shoulder_pan_joint", [-pi, 4])
+robot.setJointBounds("ur3/shoulder_lift_joint", [-pi, 0])
+robot.setJointBounds("ur3/elbow_joint", [-2.6, 2.6])
+
+# Load ground
+urdf.loadModel(
+    robot,
+    0,
+    "ground",
+    "anchor",
+    ground_urdf,
+    ground_srdf,
+    SE3(rotation=np.identity(3), translation=np.array([0, 0, 0])),
+)
+
+# Load spheres to be manipulated
 objects = list()
-nSphere = 2
 sphere_pose = SE3(rotation=np.identity(3), translation=np.array([0, 0, 0]))
 for i in range(nSphere):
     urdf.loadModel(
@@ -77,30 +100,30 @@ for i in range(nSphere):
     )
     objects.append("sphere{0}".format(i))
 
-urdf.loadModel(
-    robot,
-    0,
-    "ground",
-    "anchor",
-    ground_urdf,
-    ground_srdf,
-    SE3(rotation=np.identity(3), translation=np.array([0, 0, 0])),
-)
-
 model = robot.model()
-robot.setJointBounds("ur3/shoulder_pan_joint", [-pi, 4])
-robot.setJointBounds("ur3/shoulder_lift_joint", [-pi, 0])
-robot.setJointBounds("ur3/elbow_joint", [-2.6, 2.6])
 
 problem = Problem(robot)
-cg = Graph("graph", robot, problem)
+cg = Graph("manipulation", robot, problem)
+
+# Set error threshold and max iterations
+cg.errorThreshold(1e-4)
+cg.maxIterations(40)
 
 constraints = dict()
 
+## Grippers
+grippers = ["ur3/gripper"]
+
+## Handles
+handlesPerObject = [["sphere{0}/handle".format(i)] for i in range(nSphere)]
+contactsPerObject = [[] for i in range(nSphere)]
+
+## Constraints
 for i in range(nSphere):
     o = objects[i]
     h = robot.handles()[o + "/handle"]
     h.mask = [True, True, True, False, True, True]
+
     # placement constraint
     placementName = "place_sphere{0}".format(i)
     Id = SE3.Identity()
@@ -124,6 +147,7 @@ for i in range(nSphere):
     implicit_mask = [True, True, True]
     implicitPlacementConstraint = Implicit(pc, cts, implicit_mask)
     constraints[placementName] = implicitPlacementConstraint
+
     # placement complement constraint
     pc = Transformation(
         placementName + "/complement",
@@ -164,6 +188,7 @@ for i in range(nSphere):
         constraints[placementName + "/hold"],
     )
 
+    # preplacement constraint
     preplacementName = "preplace_sphere{0}".format(i)
     Id = SE3.Identity()
     q = Quaternion(1, 0, 0, 0)
@@ -231,12 +256,6 @@ q_goal = [
     1,
 ]
 
-grippers = ["ur3/gripper"]
-handlesPerObject = [["sphere{0}/handle".format(i)] for i in range(nSphere)]
-contactsPerObject = [[] for i in range(nSphere)]
-
-cg.maxIterations(40)
-cg.errorThreshold(0.0001)
 factory = ConstraintGraphFactory(cg, constraints)
 
 factory.setGrippers(grippers)
@@ -248,7 +267,7 @@ factory.generate()
 #           'ur3/gripper > sphere1/handle | f_ls'] :
 #  cg.setWeight(cg.getTransition(e), 100)
 # for e in ['ur3/gripper < sphere0/handle | 0-0_ls',
-#          'ur3/gripper < sphere1/handle | 0-1_ls'] :
+#           'ur3/gripper < sphere1/handle | 0-1_ls'] :
 #  cg.setWeight(cg.getTransition(e), 100)
 
 for i in range(nSphere):
@@ -263,6 +282,8 @@ for i in range(nSphere):
 
 problem.steeringMethod(Straight(problem))
 problem.pathValidation(Dichotomy(robot, 0))
+
+# need to set path projector due to implicit constraints added above
 problem.pathProjector(ProgressiveProjector(
     problem.distance(), problem.steeringMethod(), 0.01
 ))
@@ -272,21 +293,25 @@ cg.initialize()
 problem.initConfig(np.array(q_init))
 problem.addGoalConfig(np.array(q_goal))
 problem.constraintGraph(cg)
-manipulationPlanner = ManipulationPlanner(problem)
-manipulationPlanner.maxIterations(5000)
+
+planner = StatesPathFinder(problem)
+planner.maxIterations(5000)
+
+problem.setParameter("StatesPathFinder/innerPlannerTimeOut", 0.0)
+problem.setParameter("StatesPathFinder/innerPlannerMaxIterations", 100)
+problem.setParameter("StatesPathFinder/nTriesUntilBacktrack", 3)
 
 # Run benchmark
 #
-
 totalTime = dt.timedelta(0)
 totalNumberNodes = 0
 success = 0
 solutions = list()
 for i in range(args.N):
     try:
-        manipulationPlanner.roadmap().clear()
+        planner.roadmap().clear()
         t1 = dt.datetime.now()
-        path = manipulationPlanner.solve()
+        path = planner.solve()
         solutions.append(path)
         t2 = dt.datetime.now()
     except Exception as e:
@@ -295,9 +320,10 @@ for i in range(args.N):
         success += 1
         totalTime += t2 - t1
         print(t2 - t1)
-        n = len(manipulationPlanner.roadmap().nodes())
+        n = len(planner.roadmap().nodes())
         totalNumberNodes += n
         print("Number nodes: " + str(n))
+
 if args.N != 0:
     print("#" * 20)
     print(f"Number of rounds: {args.N}")

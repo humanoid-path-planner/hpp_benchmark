@@ -3,6 +3,9 @@
 {
   CURRENT_DIR=$PWD;
   cd ../../;
-  (for folder in $(ls -d */ | sed s#/##); do  cd $folder; echo $folder:$(git rev-parse HEAD); cd ..; done) > $CURRENT_DIR/commit;
+  (for folder in */; do
+    commit=$(git -C "$folder" rev-parse HEAD 2> /dev/null) || continue;
+    echo "${folder%/}:$commit";
+  done) > "$CURRENT_DIR/commit";
   exit
 }
