@@ -291,7 +291,6 @@ for i in range(args.N):
         t2 = dt.datetime.now()
     except Exception as e:
         print(f"Failed to plan path: {e}")
-        break
     else:
         success += 1
         totalTime += t2 - t1
